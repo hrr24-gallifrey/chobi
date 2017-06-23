@@ -1,0 +1,25 @@
+{
+  "name": "chobi",
+  "version": "1.0.0",
+  "description": "Supercharged Photo Album",
+  "authors": [
+    "Kenneth Marshall",
+    "Kevin MacFarlane",
+    "Placid Rodrigues",
+    "Scott Rudiger"
+  ],
+  "license": "UNLICENSED",
+  "private": true,
+  "dependencies": {
+    "jquery": "^3.2.1",
+    "react": "^15.6.1",
+    "bootstrap": "^3.3.7"
+  },
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ]
+}
