@@ -1,5 +1,9 @@
-const AlbumPhotos ({}) => {
-  return ()
-}
+import React from 'react';
 
-window.AlbumPhotos = AlbumPhotos;
+const AlbumPhotos = ({}) => {
+  return (
+    <div>AlbumPhotos</div>
+  );
+};
+
+export default AlbumPhotos;

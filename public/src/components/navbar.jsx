@@ -1,7 +1,10 @@
+import React from 'react';
+import PhotoForm from './photoform.jsx';
+
 const Navbar = ({addPhoto}) => {
   return (
     <PhotoForm addPhoto={addPhoto}/>
   );
-}
+};
 
-window.Navbar = Navbar;
+export default Navbar;

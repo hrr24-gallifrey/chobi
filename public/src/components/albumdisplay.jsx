@@ -1,5 +1,9 @@
-const AlbumDisplay = ({currentAlbum}) => {
-  return ()
-}
+import React from 'react';
 
-window.AlbumDisplay = AlbumDisplay;
+const AlbumDisplay = ({currentAlbum}) => {
+  return (
+    <div>AlbumDisplay</div>
+  );
+};
+
+export default AlbumDisplay;
