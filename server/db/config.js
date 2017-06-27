@@ -1,6 +1,8 @@
 var mongoose = require('mongoose');
 
-mongoose.connect('mongodb://localhost/chobi');
+var mongooseUri = 'mongodb://chobi_user:chobi123@ds139262.mlab.com:39262/heroku_rwrj9msr';
+
+mongoose.connect(mongooseUri);
 
 var db = mongoose.connection;
 

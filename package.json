@@ -4,7 +4,9 @@
   "description": "Supercharged Photo Album",
   "main": "server/index.js",
   "scripts": {
-    "start": "nodemon server/index.js",
+    "start": "node server/index.js",
+    "start-dev": "nodemon server/index.js",
+    "deploy": "git push heroku master",
     "test": "echo \"Error: no test specified\" && exit 1",
     "run-script": "npm install && bower install"
   },
