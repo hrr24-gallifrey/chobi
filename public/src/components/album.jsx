@@ -1,5 +1,14 @@
-const Album = ({album, selectAlbum}) => {
-  return (<li onClick={() => { selectAlbum(album) }}></li>)
-}
+import React from 'react';
 
-window.Album = Album;
+const Album = ({album, selectAlbum}) => { // edited this (wip)
+  return (
+    <div>
+      <h3 onClick={() => { selectAlbum(album); }}>Album Name</h3> {/* << make dynamic*/}
+      <ul>
+        {/* map Photo elements inside? */}
+      </ul>
+    </div>
+  );
+};
+
+export default Album;
