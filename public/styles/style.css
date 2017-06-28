@@ -1,0 +1,9 @@
+.dropdown-menu {
+  padding: 15px;
+  padding-bottom: 10px;
+  width: 300px;
+}
+
+.dropdown-menu .form-group {
+  margin-bottom: 7px;
+}
