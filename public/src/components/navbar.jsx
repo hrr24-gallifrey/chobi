@@ -24,11 +24,7 @@ const Navbar = ({addPhoto}) => {
         <li className="dropdown">
           <a className="dropdown-toggle" href="#" data-toggle="dropdown">Upload <span className="caret"></span></a>
           <div className="dropdown-menu">
-          <form className="form-horizontal"  method="post">
-            <input id="sp_uname" className="form-control login" type="text" name="sp_uname" placeholder="Username.." />
-            <input id="sp_pass" className="form-control login" type="password" name="sp_pass" placeholder="Password.."/>
-            <input className="btn btn-primary" type="submit" name="submit" value="login" />
-          </form>
+            <PhotoForm addPhoto={addPhoto}/>
           </div>
         </li>
 
@@ -49,6 +45,14 @@ export default Navbar;
 // <PhotoForm addPhoto={addPhoto}/>
 
 /*
+
+<form className="form-horizontal"  method="post">
+            <input id="sp_uname" className="form-control login" type="text" name="sp_uname" placeholder="Username.." />
+            <input id="sp_pass" className="form-control login" type="password" name="sp_pass" placeholder="Password.."/>
+            <input className="btn btn-primary" type="submit" name="submit" value="login" />
+          </form>
+
+
 <li className="dropdown">
           <a href="#" className="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Dropdown <span className="caret"></span></a>
           <ul className="dropdown-menu">
