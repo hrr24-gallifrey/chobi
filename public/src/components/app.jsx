@@ -28,7 +28,6 @@ export default class App extends React.Component {
   render() {
     return (
       <div>
-        <h3>rendered App</h3>
         <Navbar addPhoto={this.addPhoto.bind(this)}/>
         <AlbumDisplay currentAlbum={this.state.currentAlbum}/>
         <AlbumList albums={this.state.albums} selectAlbum={this.selectAlbum.bind(this)}/>
