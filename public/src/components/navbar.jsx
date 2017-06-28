@@ -5,7 +5,7 @@ import PhotoForm from './photoform.jsx';
 const Navbar = ({addPhoto}) => {
   return (
 
-<nav className="navbar navbar-default">
+<nav className="navbar navbar-default navbar-fixed-top">
   <div className="container-fluid">
     <div className="navbar-header">
       <button type="button" className="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
@@ -14,7 +14,7 @@ const Navbar = ({addPhoto}) => {
         <span className="icon-bar"></span>
         <span className="icon-bar"></span>
       </button>
-      <a className="navbar-brand" href="#">Chobi</a>
+      <a className="navbar-brand" href="/">Chobi</a>
     </div>
 
     <div className="collapse navbar-collapse" id="bs-example-navbar-collapse-1">

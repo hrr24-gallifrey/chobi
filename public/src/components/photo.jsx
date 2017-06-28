@@ -2,7 +2,7 @@ import React from 'react';
 
 const Photo = ({}) => {
   return (
-    {/* <img/> or <li><img/></li> ? */}
+    <img src="https://dummyimage.com/300"/>
   );
 };
 
