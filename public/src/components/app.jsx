@@ -2,6 +2,7 @@ import React from 'react';
 import Navbar from './navbar.jsx';
 import AlbumDisplay from './albumdisplay.jsx';
 import AlbumList from './albumlist.jsx';
+import Album from './album.jsx';
 
 export default class App extends React.Component {
   constructor(props) {
@@ -47,8 +48,11 @@ export default class App extends React.Component {
     return (
       <div>
         <Navbar addPhoto={this.addPhoto.bind(this)}/>
-        <AlbumDisplay currentAlbum={this.state.currentAlbum}/>
-        <AlbumList albums={this.state.albums} selectAlbum={this.selectAlbum.bind(this)}/>
+        {/*<AlbumDisplay currentAlbum={this.state.currentAlbum}/>*/}
+        <div className="container-fluid">
+          <AlbumList albums={this.state.albums} selectAlbum={this.selectAlbum.bind(this)}/>
+          <Album />
+        </div>
       </div>
     );
   }
