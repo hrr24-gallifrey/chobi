@@ -6,10 +6,12 @@ const PhotoForm = ({addPhoto}) => {
   let desc;
 
   return (
-    <form method="post" onSubmit={(e) => { // add a drop-down selector for album?
-      console.log(photo.value);
+    <form method="post" encType="multpart/form-data" onSubmit={(e) => { // add a drop-down selector for album?
+      // console.log('photo', photo.files[0]);
+      // console.log('photo value', photo.value);
+      // console.log('name', name.files);
       e.preventDefault();
-      addPhoto(photo.value, name.value, desc.value);
+      addPhoto(photo.files[0], name.value, desc.value);
       photo.value = '';
       name.value = '';
       desc.value = '';
