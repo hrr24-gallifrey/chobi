@@ -14,26 +14,25 @@ export default class App extends React.Component {
   }
 
   addPhoto(photo, albumName, description) { // pass in album name/id pulled from drop-down selector?
-    console.log('photo', photo);
-    // var data = new FormData();
-    // data.append('albumName', albumName);
-    // data.append('description', description);
-    // console.log('data', data);
 
+    var data = new FormData();
+    data.append('photo', photo, photo.name);
+    data.append('albumName', albumName);
+    data.append('description', description);
 
-
-    var data = {
-      'photo': photo,
-      'albumName': albumName,
-      'description': description
-    };
-
-    // $.ajax({
-    //   type: 'POST',
-    //   url: ''
-
-
-    // });
+    $.ajax({
+      type: 'POST',
+      url: 'upload',
+      data: data,
+      processData: false,
+      contentType: false,
+      success: function(response) {
+        console.log('success', response);
+      },
+      error: function(error) {
+        console.error('Error in submitting photo upload form: ', error);
+      }
+    });
   }
 
   selectAlbum() {

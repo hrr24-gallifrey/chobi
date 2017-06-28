@@ -7,9 +7,6 @@ const PhotoForm = ({addPhoto}) => {
 
   return (
     <form method="post" encType="multpart/form-data" onSubmit={(e) => { // add a drop-down selector for album?
-      // console.log('photo', photo.files[0]);
-      // console.log('photo value', photo.value);
-      // console.log('name', name.files);
       e.preventDefault();
       addPhoto(photo.files[0], name.value, desc.value);
       photo.value = '';
@@ -22,12 +19,12 @@ const PhotoForm = ({addPhoto}) => {
         }}/>
       </div>
       <div className="form-group">
-        <input id="desc" className="form-control" type="text" name="desc" placeholder="Description" ref={node3 => {
+        <input id="desc" className="form-control" type="text" name="desc" placeholder="Description" autoComplete="off" ref={node3 => {
           desc = node3;
         }}/>
       </div>
       <div className="form-group">
-        <input id="name" className="form-control" type="text" name="name" placeholder="Album name" ref={node2 => {
+        <input id="name" className="form-control" type="text" name="name" placeholder="Album name" autoComplete="off" ref={node2 => {
           name = node2;
         }}/>
       </div>
