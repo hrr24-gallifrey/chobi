@@ -6,10 +6,9 @@
   "scripts": {
     "start": "node server/index.js",
     "start-dev": "nodemon server/index.js",
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "mocha test/*.js",
     "bundle": "npm install && bower install && webpack --watch",
-    "lint": "./node_modules/.bin/eslint ./",
-    "test": "mocha test/*.js"
+    "lint": "./node_modules/.bin/eslint ./"
   },
   "repository": {
     "type": "git",
@@ -27,6 +26,8 @@
   },
   "homepage": "https://github.com/placidrod/chobi#readme",
   "dependencies": {
+    "bcrypt-nodejs": "0.0.3",
+    "bluebird": "^3.5.0",
     "body-parser": "^1.17.2",
     "cloudinary": "^1.9.0",
     "express": "^4.15.3",

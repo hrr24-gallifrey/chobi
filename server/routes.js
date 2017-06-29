@@ -1,16 +1,30 @@
-const router = require('express').Router();
+const Router = require('express').Router;
 const requestHandler = require('./lib/request-handler.js');
 
-router.get('/:id', requestHandler.getUser);
+const router = {};
+router.user = Router();
+router.auth = Router();
 
-router.get('/:id/albums', requestHandler.getAlbums);
+// auth routes
+// router.auth.get('/signup', requestHandler.sendSignup);
 
-router.get('/:id/pics', requestHandler.getPics);
+// router.auth.post('/signup', requestHandler.handleSignup);
 
-router.post('/:id/upload', requestHandler.createNewAlbumOnePhoto);
+// router.auth.get('/login', requestHandler.sendLogin);
 
-router.post('/:id/album/', requestHandler.createNewAlbum);
+// router.auth.post('/login', requestHandler.handleLogin);
 
-router.post('/create', requestHandler.createUser);
+// user routes (after logging in)
+router.user.get('/:username', requestHandler.getUser);
+
+router.user.get('/:username/albums', requestHandler.getAlbums);
+
+router.user.get('/:username/pics', requestHandler.getPics);
+
+router.user.post('/:username/upload', requestHandler.createNewAlbumOnePhoto);
+
+router.user.post('/:username/album/', requestHandler.createNewAlbum);
+
+router.user.post('/create', requestHandler.createUser);
 
 module.exports = router;

@@ -6,7 +6,7 @@ const upload = multer().single('photo');
 const requestHandler = {};
 
 requestHandler.getUser = function (req, res) {
-  User.findOne({ _id: req.params.id }, (error, user) => {
+  User.findOne({ username: req.params.username }, (error, user) => {
     if (error) {
       // console.error(error)
       res.status(500).send(error);
@@ -16,8 +16,12 @@ requestHandler.getUser = function (req, res) {
   });
 };
 
+// requestHandler.sendSignup = function (req, res) {
+//   res.sendFile()
+// };
+
 requestHandler.getAlbums = function (req, res) {
-  User.findOne({ _id: req.params.id }, (error, user) => {
+  User.findOne({ username: req.params.username }, (error, user) => {
     if (error) {
       // console.error(error)
       res.status(500).send(error);
@@ -28,7 +32,7 @@ requestHandler.getAlbums = function (req, res) {
 };
 
 requestHandler.getPics = function (req, res) {
-  User.findOne({ _id: req.params.id }, (error, user) => {
+  User.findOne({ username: req.params.username }, (error, user) => {
     if (error) {
       // console.error(error)
       res.status(500).send(error);
@@ -62,7 +66,7 @@ requestHandler.createNewAlbumOnePhoto = (req, res) => {
       };
 
       User.findOneAndUpdate(
-        { _id: req.params.id },
+        { username: req.params.username },
         { $push: { photos: photo } },
         { $push: { albums: album } },
         { new: true },
@@ -85,7 +89,7 @@ requestHandler.createNewAlbum = function (req, res) {
   };
 
   User.findOneAndUpdate(
-    { _id: req.params.id },
+    { username: req.params.username },
     { $push: { albums: album } },
     { new: true },
     (error, user) => {
