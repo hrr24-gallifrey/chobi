@@ -16,11 +16,23 @@ export default class App extends React.Component {
     };
   }
 
-  addPhoto(photo, albumName, description) { // pass in album name/id pulled from drop-down selector?
+  addPhoto(photo, albumName, description, newAlbumName) { // pass in album name/id pulled from drop-down selector?
 
     var data = new FormData();
     data.append('photo', photo, photo.name);
-    data.append('albumName', albumName);
+
+    if(albumName === '__newalbum') {
+      if(newAlbumName === '') {
+        data.append('albumName', 'All Photos');
+      } else {
+         data.append('albumName', newAlbumName);
+      }
+    } else if(albumName === '') {
+      data.append('albumName', 'All Photos');
+    } else {
+      data.append('albumName', albumName);
+    }
+
     data.append('description', description);
 
     $.ajax({
