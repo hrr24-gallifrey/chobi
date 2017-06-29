@@ -10,7 +10,7 @@ export default class App extends React.Component {
 
     this.state = {
       albums: [],
-      currentAlbum: null
+      currentAlbum: {}
     };
   }
 
@@ -44,16 +44,30 @@ export default class App extends React.Component {
     //$.ajax({});
   }
 
+  renderPage({currentAlbum}) {
+    if (currentAlbum === null) {
+      //return (<AlbumList albums={this.state.albums} selectAlbum={this.selectAlbum.bind(this)}/>)
+      return (<Album />);
+    } else {
+      return (<AlbumDisplay currentAlbum={currentAlbum}/>);
+    }
+  }
+
   render() {
     return (
       <div>
         <Navbar addPhoto={this.addPhoto.bind(this)}/>
-        {/*<AlbumDisplay currentAlbum={this.state.currentAlbum}/>*/}
         <div className="container-fluid">
-          <AlbumList albums={this.state.albums} selectAlbum={this.selectAlbum.bind(this)}/>
-          <Album />
+          <this.renderPage currentAlbum={this.state.currentAlbum} />
         </div>
       </div>
     );
   }
 }
+
+
+/*
+<AlbumDisplay currentAlbum={this.state.currentAlbum}/>
+<AlbumList albums={this.state.albums} selectAlbum={this.selectAlbum.bind(this)}/>
+<Album />
+*/

@@ -1,8 +1,9 @@
 import React from 'react';
+import AlbumPhotos from './albumPhotos.jsx';
 
 const AlbumDisplay = ({currentAlbum}) => {
   return (
-    <div>AlbumDisplay</div>
+    <div><AlbumPhotos /></div>
   );
 };
 
