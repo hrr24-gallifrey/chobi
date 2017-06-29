@@ -10,7 +10,8 @@ export default class App extends React.Component {
 
     this.state = {
       albums: [],
-      currentAlbum: {},
+      photos: [],
+      currentAlbum: null,
       currentAlbumIndex: 5
     };
   }
@@ -24,12 +25,13 @@ export default class App extends React.Component {
 
     $.ajax({
       type: 'POST',
-      url: 'http://localhost:8080/user/1234/upload', // '1234' should be the actual user id of person
+      url: "http://127.0.0.1:8080/user/john_doe/upload", // '1234' should be the actual user id of person
       data: data,
       processData: false,
       contentType: false,
       success: function(response) {
         console.log('success', response);
+        this.setState({albums: response.albums, photos: response.photos})
       },
       error: function(error) {
         console.error('Error in submitting photo upload form: ', error);
@@ -38,11 +40,22 @@ export default class App extends React.Component {
   }
 
   selectAlbum(album) {
-
+    this.setState({currentAlbum: album});
   }
 
   componentDidMount() {
-    //$.ajax({});
+    $.ajax({
+      type: 'GET',
+      url: 'http://127.0.0.1:8080/user/john_doe',
+      success: function(data) {
+        console.log(data)
+        this.setState({albums: data.photos});
+        console.log(this.state.albums)
+      }.bind(this),
+      error: function(err) {
+        console.error('error', err);
+      }.bind(this)
+    });
   }
 
   changeAlbum(dir) {
@@ -52,8 +65,8 @@ export default class App extends React.Component {
 
   renderPage({currentAlbum, albums, selectAlbum}) {
     if (currentAlbum === null) {
-      //return (<AlbumList albums={this.state.albums} selectAlbum={this.selectAlbum.bind(this)}/>)
-      return (<Album />);
+      return (<AlbumList albums={albums} selectAlbum={selectAlbum}/>)
+      //return (<Album />);
     } else {
       return (<AlbumDisplay currentAlbum={currentAlbum} albums={albums} selectAlbum={selectAlbum}/>);
     }
