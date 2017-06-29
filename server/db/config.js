@@ -1,10 +1,10 @@
-var mongoose = require('mongoose');
+const mongoose = require('mongoose');
 
-var mongooseUri = 'mongodb://chobi_user:chobi123@ds139262.mlab.com:39262/heroku_rwrj9msr';
+const mongooseUri = 'mongodb://chobi_user:chobi123@ds139262.mlab.com:39262/heroku_rwrj9msr';
 
 mongoose.connect(mongooseUri);
 
-var db = mongoose.connection;
+const db = mongoose.connection;
 
 db.on('error', (err) => {
   console.error('connection error: ', err);

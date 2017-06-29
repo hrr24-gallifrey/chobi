@@ -7,4 +7,4 @@ build/
 public/dist/
 
 config.js
-config-env.js
+server/lib/config-env.js

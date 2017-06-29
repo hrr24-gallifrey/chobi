@@ -1,5 +1,5 @@
-var router = require('express').Router();
-var requestHandler = require('./lib/request-handler.js');
+const router = require('express').Router();
+const requestHandler = require('./lib/request-handler.js');
 
 router.get('/:id', requestHandler.getUser);
 

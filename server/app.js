@@ -1,16 +1,15 @@
-var express = require('express');
-var router = require('./routes.js');
-var cors = require('express-cors');
+const express = require('express');
+const router = require('./routes.js');
+const cors = require('express-cors');
+const path = require('path');
 
-
-
-var app = express();
+const app = express();
 
 app.use(cors({
-  allowedOrigins: ['*']
+  allowedOrigins: ['*'],
 }));
 
-app.use(express.static(__dirname + '/../public'));
+app.use(express.static(path.join(__dirname, '/../public')));
 app.use('/user', router);
 
 module.exports = app;
