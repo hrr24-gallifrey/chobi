@@ -10,6 +10,7 @@ app.use(cors({
 }));
 
 app.use(express.static(path.join(__dirname, '/../public')));
-app.use('/user', router);
+app.use('/', router.auth);
+app.use('/user', router.user);
 
 module.exports = app;
