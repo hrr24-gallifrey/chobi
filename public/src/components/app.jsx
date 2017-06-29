@@ -10,7 +10,8 @@ export default class App extends React.Component {
 
     this.state = {
       albums: [],
-      currentAlbum: {},
+      photos: [],
+      currentAlbum: null,
       currentAlbumIndex: 5
     };
   }
@@ -24,12 +25,13 @@ export default class App extends React.Component {
 
     $.ajax({
       type: 'POST',
-      url: "localhost:8080/user/john_doe/upload", // '1234' should be the actual user id of person
+      url: "http://127.0.0.1:8080/user/john_doe/upload", // '1234' should be the actual user id of person
       data: data,
       processData: false,
       contentType: false,
       success: function(response) {
         console.log('success', response);
+        this.setState({albums: response.albums, photos: response.photos})
       },
       error: function(error) {
         console.error('Error in submitting photo upload form: ', error);
@@ -44,9 +46,11 @@ export default class App extends React.Component {
   componentDidMount() {
     $.ajax({
       type: 'GET',
-      url: 'localhost:8080/user/john_doe',
+      url: 'http://127.0.0.1:8080/user/john_doe',
       success: function(data) {
-        this.setState({albums: data.albums});
+        console.log(data)
+        this.setState({albums: data.photos});
+        console.log(this.state.albums)
       }.bind(this),
       error: function(err) {
         console.error('error', err);
