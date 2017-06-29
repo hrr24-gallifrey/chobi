@@ -1,9 +1,13 @@
 import React from 'react';
 import AlbumPhotos from './albumPhotos.jsx';
+import AlbumPhotoDisplay from './AlbumPhotoDisplay.jsx';
 
-const AlbumDisplay = ({currentAlbum}) => {
+const AlbumDisplay = ({currentAlbum, albums, selectAlbum}) => {
   return (
-    <div><AlbumPhotos /></div>
+    <div>
+      <AlbumPhotoDisplay photos={currentAlbum.photos} albums={albums} selectAlbum={selectAlbum}/>
+      <AlbumPhotos album={currentAlbum}/>
+    </div>
   );
 };
 
