@@ -1,5 +1,5 @@
 var cloudinary = require('cloudinary');
-var config = require('./config.js');
+var config = require('./config-env.js');
 var cloudinaryApi = {};
 
 cloudinary.config({
@@ -15,6 +15,6 @@ cloudinaryApi.uploadPhoto = function(image, callback) {
 cloudinaryApi.uploadPhotoBuffer = function(buffer, callback){
   cloudinary.uploader.upload_stream(callback)
     .end(buffer);
-}
+};
 
 module.exports = cloudinaryApi;
