@@ -23,7 +23,7 @@ export default class App extends React.Component {
 
     $.ajax({
       type: 'POST',
-      url: 'upload',
+      url: 'http://localhost:8080/user/1234/upload', // '1234' should be the actual user id of person
       data: data,
       processData: false,
       contentType: false,
