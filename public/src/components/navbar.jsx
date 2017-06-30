@@ -14,7 +14,7 @@ const Navbar = ({addPhoto}) => {
         <span className="icon-bar"></span>
         <span className="icon-bar"></span>
       </button>
-      <a className="navbar-brand" href="/">Chobi</a>
+      <a className="navbar-brand" href="/"><img src="../images/Chobi.png" /></a>
     </div>
 
     <div className="collapse navbar-collapse" id="bs-example-navbar-collapse-1">

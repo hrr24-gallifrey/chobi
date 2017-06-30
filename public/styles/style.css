@@ -6,6 +6,12 @@
 /*.dropdown-menu .form-group {
   margin-bottom: 7px;
 }*/
+.navbar-brand {
+  padding: 1px 6px;
+}
+.navbar-brand>img {
+  max-width: 150px;
+}
 body {
   padding-top: 50px;
   padding-bottom: 50px;
