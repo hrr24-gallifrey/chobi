@@ -43,11 +43,11 @@ export default class App extends React.Component {
       contentType: false,
       success: function(response) {
         console.log('success', response);
-        this.setState({albums: response.albums, photos: response.photos})
-      },
+        this.setState({albums: response.albums, photos: response.photos});
+      }.bind(this),
       error: function(error) {
         console.error('Error in submitting photo upload form: ', error);
-      }
+      }.bind(this)
     });
   }
 
@@ -61,7 +61,7 @@ export default class App extends React.Component {
       url: 'http://127.0.0.1:8080/user/john_doe',
       success: function(data) {
         console.log(data)
-        this.setState({albums: data.photos});
+        this.setState({albums: data.albums});
         console.log(this.state.albums)
       }.bind(this),
       error: function(err) {
