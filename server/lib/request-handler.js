@@ -6,7 +6,7 @@ const upload = multer().single('photo');
 const requestHandler = {};
 
 requestHandler.getUser = function (req, res) {
-  User.findOne({ username: req.params.username }, (error, user) => {
+  User.findOne({ username: req.params.username }, {password:0}, (error, user) => {
     if (error) {
       // console.error(error)
       res.status(500).send(error);
@@ -67,8 +67,7 @@ requestHandler.createNewAlbumOnePhoto = (req, res) => {
 
       User.findOneAndUpdate(
         { username: req.params.username },
-        { $push: { photos: photo } },
-        { $push: { albums: album } },
+        { $push: { photos: photo, albums: album } },
         { new: true },
         (error, user) => {
           if (error) {
