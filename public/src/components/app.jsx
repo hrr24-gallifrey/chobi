@@ -52,6 +52,7 @@ export default class App extends React.Component {
   }
 
   selectAlbum(album) {
+    console.log(album);
     this.setState({currentAlbum: album});
   }
 
