@@ -57,9 +57,13 @@ if (process.env.NODE_ENV !== 'production') {
     username: 'john_doe',
     password: 'john123',
     email: 'john@doe.com',
+    albums: [{albumName: 'All Photos', photos: []}]
   };
 
-  User.remove();
+  // User.remove({}, function(err, user){
+  //   console.log('table dropped');
+  // });
+
   User.create(testUser);
 }
 
