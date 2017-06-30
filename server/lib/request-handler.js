@@ -1,6 +1,7 @@
 const User = require('../db/models/user.js');
 const multer = require('multer');
 const cloudinaryApi = require('./cloudinaryApi.js');
+const _ = require('underscore');
 
 const upload = multer().single('photo');
 const requestHandler = {};
@@ -42,7 +43,7 @@ requestHandler.getPics = function (req, res) {
   });
 };
 
-requestHandler.createNewAlbumOnePhoto = (req, res) => {
+requestHandler.handleUploadPhoto = (req, res) => {
   upload(req, res, (err) => {
     if (err) {
       // An error occurred when uploading
@@ -52,7 +53,8 @@ requestHandler.createNewAlbumOnePhoto = (req, res) => {
     }
 
     cloudinaryApi.uploadPhotoBuffer(req.file.buffer, (result) => {
-      // console.log(result);
+       //console.log('cloudinaryApi result', result);
+
       const photo = {
         description: req.body.description,
         url: result.url,
@@ -64,19 +66,50 @@ requestHandler.createNewAlbumOnePhoto = (req, res) => {
           photo,
         ],
       };
+      let index;
 
-      User.findOneAndUpdate(
+      User.findOne(
         { username: req.params.username },
-        { $push: { photos: photo, albums: album } },
-        { new: true },
         (error, user) => {
-          if (error) {
-            res.status(500).send(error);
+          let allPhotosIndex;
+          let foundAlbumIndex;
+          if (!error) {
+            console.log('found user', user);
+
+            allPhotosIndex = _.findIndex(user.albums, function(foundAlbum) {
+              return foundAlbum.albumName === 'All Photos';
+            });
+
+            if (req.body.albumName !== 'All Photos') {
+              console.log('===== ablum name ==: ',req.body.albumName);
+              foundAlbumIndex = _.findIndex(user.albums, function(album) {
+                return album.albumName === req.body.albumName;
+              });
+              console.log('===== found index', foundAlbumIndex);
+            }
+
+
+            user.albums[allPhotosIndex].photos.push(photo);
+
+            if (foundAlbumIndex > -1) {
+              user.albums[foundAlbumIndex].photos.push(photo);
+            } else if (foundAlbumIndex != undefined) {
+              user.albums.push(album);
+            }
+
+            console.log('updating user', user);
+
+            user.save(function(err, savedUser) {
+              res.status(200).json(savedUser);
+            });
+
           } else {
-            res.json(user);
+            console.error(err);
+            res.status(500).json(err);
           }
-        } // eslint-disable-line
+        }
       );
+
     });
   });
 };
@@ -117,6 +150,7 @@ requestHandler.createUser = function (req, res) {
         username: req.body.username,
         email: req.body.email,
         profilePic: result.url,
+        albums: [{albumName: 'All Photos', photos: []}]
       };
 
       User.create(
