@@ -21,7 +21,7 @@ router.user.get('/:username/albums', requestHandler.getAlbums);
 
 router.user.get('/:username/pics', requestHandler.getPics);
 
-router.user.post('/:username/upload', requestHandler.createNewAlbumOnePhoto);
+router.user.post('/:username/upload', requestHandler.handleUploadPhoto);
 
 router.user.post('/:username/album/', requestHandler.createNewAlbum);
 
