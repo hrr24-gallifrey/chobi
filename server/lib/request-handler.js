@@ -67,8 +67,7 @@ requestHandler.createNewAlbumOnePhoto = (req, res) => {
 
       User.findOneAndUpdate(
         { username: req.params.username },
-        { $push: { photos: photo } },
-        { $push: { albums: album } },
+        { $push: { photos: photo, albums: album } },
         { new: true },
         (error, user) => {
           if (error) {
