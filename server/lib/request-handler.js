@@ -7,7 +7,7 @@ const upload = multer().single('photo');
 const requestHandler = {};
 
 requestHandler.getUser = function (req, res) {
-  User.findOne({ username: req.params.username }, {password:0}, (error, user) => {
+  User.findOne({ username: req.params.username }, { password: 0 }, (error, user) => {
     if (error) {
       // console.error(error)
       res.status(500).send(error);
@@ -47,14 +47,11 @@ requestHandler.handleUploadPhoto = (req, res) => {
   upload(req, res, (err) => {
     if (err) {
       // An error occurred when uploading
-      // console.error(err);
       res.status(500).send(err);
       return;
     }
 
     cloudinaryApi.uploadPhotoBuffer(req.file.buffer, (result) => {
-       //console.log('cloudinaryApi result', result);
-
       const photo = {
         description: req.body.description,
         url: result.url,
@@ -66,7 +63,6 @@ requestHandler.handleUploadPhoto = (req, res) => {
           photo,
         ],
       };
-      let index;
 
       User.findOne(
         { username: req.params.username },
@@ -74,42 +70,50 @@ requestHandler.handleUploadPhoto = (req, res) => {
           let allPhotosIndex;
           let foundAlbumIndex;
           if (!error) {
-            console.log('found user', user);
-
-            allPhotosIndex = _.findIndex(user.albums, function(foundAlbum) {
-              return foundAlbum.albumName === 'All Photos';
+            // find index of All Photos album
+            allPhotosIndex = _.findIndex(user.albums, foundAlbum => {
+              return foundAlbum.name === 'All Photos';
             });
-
+            // check if 'All Photos' album exists
+            if (allPhotosIndex > -1) {
+              // add every photo that gets uploaded to the All Photos album
+              user.albums[allPhotosIndex].photos.push(photo);
+            // else, ('All Photos' album doesn't exist) create it
+            } else {
+              const allPhotosAlbum = {
+                name: 'All Photos',
+                photos: [
+                  photo,
+                ],
+              };
+              // and add it to user's albums
+              user.albums.push(allPhotosAlbum);
+            }
+            // if the user specified a different album...
             if (req.body.albumName !== 'All Photos') {
-              console.log('===== ablum name ==: ',req.body.albumName);
-              foundAlbumIndex = _.findIndex(user.albums, function(album) {
-                return album.albumName === req.body.albumName;
+              // check if album already exists by finding its index
+              foundAlbumIndex = _.findIndex(user.albums, foundAlbum => {
+                return foundAlbum.name === req.body.albumName;
               });
-              console.log('===== found index', foundAlbumIndex);
+              // if album exists...
+              if (foundAlbumIndex > -1) {
+                // add the uploaded photo to that album
+                user.albums[foundAlbumIndex].photos.push(photo);
+              // else, add the album to the user's album list
+              } else {
+                user.albums.push(album);
+              }
             }
-
-
-            user.albums[allPhotosIndex].photos.push(photo);
-
-            if (foundAlbumIndex > -1) {
-              user.albums[foundAlbumIndex].photos.push(photo);
-            } else if (foundAlbumIndex != undefined) {
-              user.albums.push(album);
-            }
-
-            console.log('updating user', user);
-
-            user.save(function(err, savedUser) {
+            // save updated user and send back to client
+            user.save((err, savedUser) => { // eslint-disable-line
               res.status(200).json(savedUser);
             });
-
           } else {
             console.error(err);
             res.status(500).json(err);
           }
-        }
+        } // eslint-disable-line
       );
-
     });
   });
 };
@@ -150,7 +154,7 @@ requestHandler.createUser = function (req, res) {
         username: req.body.username,
         email: req.body.email,
         profilePic: result.url,
-        albums: [{albumName: 'All Photos', photos: []}]
+        albums: [{ albumName: 'All Photos', photos: [] }],
       };
 
       User.create(
