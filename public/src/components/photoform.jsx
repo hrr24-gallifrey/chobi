@@ -1,6 +1,6 @@
 import React from 'react';
 
-const PhotoForm = ({addPhoto}) => {
+const PhotoForm = ({addPhoto, currentUser}) => {
   let photo;
   let name;
   let desc;
