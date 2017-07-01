@@ -44,14 +44,14 @@ requestHandler.getPics = function (req, res) {
 };
 
 requestHandler.handleUploadPhoto = (req, res) => {
-  upload(req, res, (err) => {
+  upload(req, res, err => {
     if (err) {
       // An error occurred when uploading
       res.status(500).send(err);
       return;
     }
 
-    cloudinaryApi.uploadPhotoBuffer(req.file.buffer, (result) => {
+    cloudinaryApi.uploadPhotoBuffer(req.file.buffer, result => {
       const photo = {
         description: req.body.description,
         url: result.url,
@@ -139,27 +139,26 @@ requestHandler.createNewAlbum = function (req, res) {
 };
 
 requestHandler.createUser = function (req, res) {
-  upload(req, res, (err) => {
+  upload(req, res, err => {
     if (err) {
       // An error occurred when uploading
-      // console.error(err);
       res.status(500).send(err);
       return;
     }
 
-    cloudinaryApi.uploadPhotoBuffer(req.file.buffer, (result) => {
+    cloudinaryApi.uploadPhotoBuffer(req.file.buffer, result => {
       const user = {
         firstName: req.body.firstName,
         lastName: req.body.lastName,
         username: req.body.username,
         email: req.body.email,
         profilePic: result.url,
-        albums: [{ albumName: 'All Photos', photos: [] }],
+        albums: [],
       };
 
       User.create(
         user,
-        (error, user) => { // eslint-disable-line
+        (error, user) => {// eslint-disable-line
           if (error) {
             res.status(500).send(error);
           } else {
@@ -169,7 +168,6 @@ requestHandler.createUser = function (req, res) {
       );
     });
   });
-  // User.create
 };
 
 module.exports = requestHandler;
