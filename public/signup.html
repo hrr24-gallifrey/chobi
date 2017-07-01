@@ -3,13 +3,13 @@
 <head>
   <meta charset="UTF-8">
   <title>Chobi</title>
-  <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.min.css">
-  <link rel="stylesheet" href="styles/style.css">
+  <link rel="stylesheet" href="/bower_components/bootstrap/dist/css/bootstrap.min.css">
+  <link rel="stylesheet" href="/styles/style.css">
 </head>
 <body>
-  <script src="bower_components/jquery/dist/jquery.min.js"></script>
-  <script src="bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
-  <form action="">
+  <script src="/bower_components/jquery/dist/jquery.min.js"></script>
+  <script src="/bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+  <form action="/auth/signup" method='POST' enctype="multipart/form-data">
     <div>
       <label for="firstname">First Name:</label>
       <input id="firstname" type="text" name="firstname">
@@ -30,6 +30,10 @@
       <label for="email">Email:</label>
       <input id="email" type="text" name="email">
     </div>
+    <div>
+      <input type="submit" value="Submit">
+    </div>
   </form>
+  <p>Already have an account? <a href="/auth/login">Login</a></p>
 </body>
 </html>
