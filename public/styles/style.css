@@ -40,7 +40,6 @@ body {
 .carousel-indicators {
     left: 33%;
     width: 92%;
-    bottom: -248px;
 }
 
 .carousel-indicators li {
