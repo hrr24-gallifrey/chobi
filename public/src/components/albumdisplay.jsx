@@ -6,7 +6,7 @@ const AlbumDisplay = ({currentAlbum, albums, selectAlbum}) => {
   return (
     <div>
       <AlbumPhotoDisplay photos={currentAlbum.photos} albums={albums} selectAlbum={selectAlbum}/>
-      <AlbumPhotos album={currentAlbum}/>
+      {/*<AlbumPhotos album={currentAlbum}/>*/}
     </div>
   );
 };
