@@ -13,7 +13,9 @@ export default class App extends React.Component {
       photos: [],
       currentAlbum: null,
       currentPhoto: 0,
-      currentAlbumIndex: 5
+      currentAlbumIndex: 5,
+      currentUser: {}, // change
+      displayUser: {} // change
     };
   }
 
@@ -38,7 +40,7 @@ export default class App extends React.Component {
 
     $.ajax({
       type: 'POST',
-      url: "http://127.0.0.1:8080/user/john_doe/upload", // '1234' should be the actual user id of person
+      url: "/user/upload",
       data: data,
       processData: false,
       contentType: false,
@@ -62,11 +64,11 @@ export default class App extends React.Component {
   componentDidMount() {
     $.ajax({
       type: 'GET',
-      url: 'http://127.0.0.1:8080/user/john_doe',
+      url: '/user/' + this.state.currentUser,
       success: function(data) {
-        console.log(data)
-        this.setState({albums: data.albums});
-        console.log(this.state.albums)
+        console.log(data);
+        this.setState({albums: data.albums, currentUser: data, displayUser: data});
+        console.log(this.state.albums);
       }.bind(this),
       error: function(err) {
         console.error('error', err);
@@ -81,10 +83,22 @@ export default class App extends React.Component {
 
   renderPage({currentAlbum, albums, selectAlbum, currentPhoto}) {
     if (currentAlbum === null) {
-      return (<AlbumList albums={albums} selectAlbum={selectAlbum}/>)
+      return (
+        <AlbumList
+          albums={albums}
+          selectAlbum={selectAlbum}
+        />
+      );
       //return (<Album />);
     } else {
-      return (<AlbumDisplay currentAlbum={currentAlbum} albums={albums} selectAlbum={selectAlbum} currentPhoto={currentPhoto}/>);
+      return (
+        <AlbumDisplay
+          currentAlbum={currentAlbum}
+          albums={albums}
+          selectAlbum={selectAlbum}
+          currentPhoto={currentPhoto}
+        />
+      );
     }
   }
 
@@ -93,7 +107,12 @@ export default class App extends React.Component {
       <div>
         <Navbar addPhoto={this.addPhoto.bind(this)}/>
         <div className="container-fluid">
-          <this.renderPage currentAlbum={this.state.currentAlbum} albums={this.state.albums} selectAlbum={this.selectAlbum.bind(this)} currentPhoto={this.state.currentPhoto}/>
+          <this.renderPage
+            currentAlbum={this.state.currentAlbum}
+            albums={this.state.albums}
+            selectAlbum={this.selectAlbum.bind(this)}
+            currentPhoto={this.state.currentPhoto}
+          />
         </div>
       </div>
     );

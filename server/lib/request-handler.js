@@ -15,7 +15,7 @@ const showAccessibleAlbums = function (currentUsername, albums) {
 
 requestHandler.getUser = function (req, res) {
   const currentUsername = req.session.username; // ken01
-  const queryUsername = req.body.username; // john_doe
+  const queryUsername = req.body.username || currentUsername; // john_doe
   if (currentUsername === queryUsername) {
     User.findOne({ username: req.session.username }, { password: 0 }, (error, user) => {
       if (error) {

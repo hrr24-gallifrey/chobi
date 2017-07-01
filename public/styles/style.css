@@ -21,7 +21,7 @@ body {
 }
 
 .carousel{
-    background: #5486a5;
+    background-color: #5486a5;
     margin-top: 20px;
     width: auto;
     height: 500px;
@@ -33,7 +33,7 @@ body {
 .carousel .item img{
     margin: 0 auto; /* Align slide image horizontally center */
     width: auto;
-    height: 500px;
+    height: 500px !important;
     max-height: 500px;
 }
 
@@ -77,6 +77,11 @@ body {
     color: #fff;
     text-align: center;
     text-shadow: 0 1px 2px rgba(0,0,0,.6);
+}
+
+.glyphicon-chevron-left,
+.glyphicon-chevron-right {
+    color: #93c7ff;
 }
 
 .carousel-caption h3 {
