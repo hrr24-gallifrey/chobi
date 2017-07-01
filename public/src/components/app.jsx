@@ -12,6 +12,7 @@ export default class App extends React.Component {
       albums: [],
       photos: [],
       currentAlbum: null,
+      currentPhoto: 0,
       currentAlbumIndex: 5
     };
   }
@@ -51,9 +52,11 @@ export default class App extends React.Component {
     });
   }
 
-  selectAlbum(album) {
+  selectAlbum(album, photo) {
+    let photoNum = photo || 0;
     console.log(album);
-    this.setState({currentAlbum: album});
+    console.log(photoNum)
+    this.setState({currentAlbum: album, currentPhoto: photoNum});
   }
 
   componentDidMount() {
@@ -76,12 +79,12 @@ export default class App extends React.Component {
     // set.state of current album to next or previous album
   }
 
-  renderPage({currentAlbum, albums, selectAlbum}) {
+  renderPage({currentAlbum, albums, selectAlbum, currentPhoto}) {
     if (currentAlbum === null) {
       return (<AlbumList albums={albums} selectAlbum={selectAlbum}/>)
       //return (<Album />);
     } else {
-      return (<AlbumDisplay currentAlbum={currentAlbum} albums={albums} selectAlbum={selectAlbum}/>);
+      return (<AlbumDisplay currentAlbum={currentAlbum} albums={albums} selectAlbum={selectAlbum} currentPhoto={currentPhoto}/>);
     }
   }
 
@@ -90,7 +93,7 @@ export default class App extends React.Component {
       <div>
         <Navbar addPhoto={this.addPhoto.bind(this)}/>
         <div className="container-fluid">
-          <this.renderPage currentAlbum={this.state.currentAlbum} albums={this.state.albums} selectAlbum={this.selectAlbum.bind(this)}/>
+          <this.renderPage currentAlbum={this.state.currentAlbum} albums={this.state.albums} selectAlbum={this.selectAlbum.bind(this)} currentPhoto={this.state.currentPhoto}/>
         </div>
       </div>
     );
