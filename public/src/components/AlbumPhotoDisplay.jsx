@@ -2,16 +2,10 @@ import React from 'react';
 
 const AlbumPhotoDisplay = ({photos, albums, selectAlbum}) => {
 
-  $('[id^=carousel-selector-]').click( function(){
-    var id_selector = $(this).attr("id");
-    var id = id_selector.substr(id_selector.length -1);
-    var id = parseInt(id);
-    console.log(id)
-    $('#myCarousel').carousel(id);
-  });
+
   const slides = photos.map((photo, i) => {
     if (i !== 0) {
-      return (<div className="item" data-slide-number={i} onClick={()=>{console.log(i)}}><img src={photo.url} alt="Second Slide" /></div>)
+      return (<div className="item" data-slide-number={i} onClick={()=>{console.log(i)}}><img src={photo.url} alt="Second Slide" /><div className="carousel-caption"><h3 >{photo.description}</h3></div></div>)
     }
   })
   const indicators = photos.map((photo, i) => {
@@ -21,14 +15,11 @@ const AlbumPhotoDisplay = ({photos, albums, selectAlbum}) => {
   })
   return (
     <div>
-    <div id="myCarousel" className="carousel slide" data-ride="carousel">
-      {/*Carousel indicators*/}
-
-
+    <div id="myCarousel" className="carousel slide" data-ride="carousel" data-interval="false">
       {/*Wrapper for carousel items*/}
       <div className="carousel-inner cont-slider">
         <div className="item active" data-slide-number="0" onClick={()=>{console.log(0)}}>
-            <img src={photos[0].url} alt="First Slide" />
+            <img src={photos[0].url} alt="First Slide" /><div className="carousel-caption"><h3 >{photos[0].description}</h3></div>
         </div>
         {slides}
       </div>
@@ -40,8 +31,10 @@ const AlbumPhotoDisplay = ({photos, albums, selectAlbum}) => {
           <span className="glyphicon glyphicon-chevron-right"></span>
       </a>
     </div>
+
+    {/*Carousel indicators*/}
     <ol className="carousel-indicators">
-      <li className="active" data-slide-to="0" data-target="#myCarousel">
+      <li className="" data-slide-to="0" data-target="#myCarousel">
         <img alt="" src={photos[0].url}/>
       </li>
       {indicators}
@@ -59,4 +52,7 @@ export default AlbumPhotoDisplay;
                     {indicators}
                 </ol>
               </div>
-            </div>*/
+            </div>
+
+<div className="carousel-caption"><h3 >{photos[4].description}</h3></div>
+            */
