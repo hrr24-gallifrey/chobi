@@ -81,10 +81,22 @@ export default class App extends React.Component {
 
   renderPage({currentAlbum, albums, selectAlbum, currentPhoto}) {
     if (currentAlbum === null) {
-      return (<AlbumList albums={albums} selectAlbum={selectAlbum}/>)
+      return (
+        <AlbumList
+          albums={albums}
+          selectAlbum={selectAlbum}
+        />
+      );
       //return (<Album />);
     } else {
-      return (<AlbumDisplay currentAlbum={currentAlbum} albums={albums} selectAlbum={selectAlbum} currentPhoto={currentPhoto}/>);
+      return (
+        <AlbumDisplay
+          currentAlbum={currentAlbum}
+          albums={albums}
+          selectAlbum={selectAlbum}
+          currentPhoto={currentPhoto}
+        />
+      );
     }
   }
 
@@ -93,7 +105,12 @@ export default class App extends React.Component {
       <div>
         <Navbar addPhoto={this.addPhoto.bind(this)}/>
         <div className="container-fluid">
-          <this.renderPage currentAlbum={this.state.currentAlbum} albums={this.state.albums} selectAlbum={this.selectAlbum.bind(this)} currentPhoto={this.state.currentPhoto}/>
+          <this.renderPage
+            currentAlbum={this.state.currentAlbum}
+            albums={this.state.albums}
+            selectAlbum={this.selectAlbum.bind(this)}
+            currentPhoto={this.state.currentPhoto}
+          />
         </div>
       </div>
     );
