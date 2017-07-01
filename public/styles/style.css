@@ -19,3 +19,48 @@ body {
 .new-name-hidden {
   display: none;
 }
+
+.carousel{
+    background: #2f4357;
+    margin-top: 20px;
+    width: auto;
+    height: 500px;
+    max-height: 500px;
+}
+.carousel .item{
+    min-height: 280px; /* Prevent carousel from being distorted if for some reason image doesn't load */
+}
+.carousel .item img{
+    margin: 0 auto; /* Align slide image horizontally center */
+    width: auto;
+    height: 500px;
+    max-height: 500px;
+}
+
+.carousel-indicators li {
+    border: medium none;
+    border-radius: 0;
+    float: left;
+    height: 54px;
+    margin-bottom: 5px;
+    margin-left: 0;
+    margin-right: 5px !important;
+    margin-top: 0;
+    width: 100px;
+}
+
+.carousel-indicators img {
+    border: 2px solid #FFFFFF;
+    float: left;
+    height: 54px;
+    left: 0;
+    width: 100px;
+}
+
+.carousel-indicators .active img {
+    border: 2px solid #FFFFFF;
+    float: left;
+    height: 54px;
+    left: 0;
+    width: 100px;
+}
