@@ -4,6 +4,16 @@ const Promise = require('bluebird');
 
 const Schema = mongoose.Schema;
 
+const photoSchema = new Schema({
+  description: String,
+  url: String,
+});
+
+const albumSchema = new Schema({
+  photos: [photoSchema],
+  name: String,
+});
+
 const userSchema = new Schema({
   firstName: String,
   lastName: String,
@@ -26,8 +36,7 @@ const userSchema = new Schema({
     },
   },
   profilePic: String,
-  photos: [],
-  albums: [],
+  albums: [albumSchema],
   friends: [],
 });
 
@@ -50,21 +59,22 @@ userSchema.pre('save', function (next) {
     });
 });
 
-if (process.env.NODE_ENV !== 'production') {
-  const testUser = {
-    firstName: 'John',
-    lastName: 'Doe',
-    username: 'john_doe',
-    password: 'john123',
-    email: 'john@doe.com',
-    albums: [{albumName: 'All Photos', photos: []}]
-  };
+// if (process.env.NODE_ENV !== 'production') {
+//   const testUser = {
+//     firstName: 'John',
+//     lastName: 'Doe',
+//     username: 'john_doe',
+//     password: 'john123',
+//     email: 'john@doe.com',
+//     // albums: [{ photos: [], name: 'All Photos' }]
+//     albums: [],
+//   };
 
-  // User.remove({}, function(err, user){
-  //   console.log('table dropped');
-  // });
+//   User.remove({}, function(err, user){
+//     console.log('table dropped');
+//   });
 
-  User.create(testUser);
-}
+//   User.create(testUser);
+// }
 
 module.exports = User;
