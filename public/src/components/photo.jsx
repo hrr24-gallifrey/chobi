@@ -2,7 +2,7 @@ import React from 'react';
 
 const Photo = ({photo}) => {
   return (
-    <img src={photo.url} title={photo.description}/>
+    <img className="img-responsive" src={photo.url} title={photo.description}/>
   );
 };
 
