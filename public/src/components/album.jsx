@@ -7,7 +7,7 @@ const Album = ({album, selectAlbum}) => { // edited this (wip)
   }*/
   const photos = album.photos.map((photo, i) => {
     if(i < 4) {
-      return (<div className="col-md-3"><Photo photo={photo}/></div>);
+      return (<div className="col-md-3" onClick={() => { selectAlbum(album); }}><Photo photo={photo}/></div>);
     }
   });
 
@@ -15,11 +15,11 @@ const Album = ({album, selectAlbum}) => { // edited this (wip)
     <div>
       <div className="row">
         <div className="col-md-12">
-          <h3 onClick={() => { selectAlbum(album); }}>{album.name}</h3> {/* << make dynamic*/}
+          <h3 className="album-title" onClick={() => { selectAlbum(album); }}>{album.name}</h3> {/* << make dynamic*/}
         </div>
       </div>
 
-      <div className="row">
+      <div className="row album-row">
         {photos}
       </div>
     </div>
