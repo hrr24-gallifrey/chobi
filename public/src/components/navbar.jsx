@@ -1,8 +1,9 @@
 import React from 'react';
 // import Bootstrap from 'bootstrap';
 import PhotoForm from './photoform.jsx';
+import FriendForm from './FriendForm.jsx';
 
-const Navbar = ({addPhoto}) => {
+const Navbar = ({addPhoto, currentUser, addFriend}) => {
   return (
 
 <nav className="navbar navbar-default navbar-fixed-top">
@@ -18,13 +19,21 @@ const Navbar = ({addPhoto}) => {
     </div>
 
     <div className="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-
+      <ul className="nav navbar-nav navbar-left">
+        <li><a href='/'>{currentUser.userName}</a></li>
+        <li className="dropdown">
+          <a className="dropdown-toggle" href="#" data-toggle="dropdown">Friends <span className="caret"></span></a>
+          <div className="dropdown-menu">
+            <FriendForm addFriend={addFriend} currentUser={currentUser}/>
+          </div>
+        </li>
+      </ul>
       <ul className="nav navbar-nav navbar-right">
 
         <li className="dropdown">
           <a className="dropdown-toggle" href="#" data-toggle="dropdown">Upload <span className="caret"></span></a>
           <div className="dropdown-menu">
-            <PhotoForm addPhoto={addPhoto}/>
+            <PhotoForm addPhoto={addPhoto} currentUser={currentUser}/>
           </div>
         </li>
 
