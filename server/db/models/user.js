@@ -10,6 +10,7 @@ const photoSchema = new Schema({
 });
 
 const albumSchema = new Schema({
+  access: [],
   photos: [photoSchema],
   name: String,
 });
@@ -51,7 +52,10 @@ User.comparePassword = function (candidatePassword, savedPassword, cb) {
 
 userSchema.pre('save', function (next) {
   const cipher = Promise.promisify(bcrypt.hash);
-  this.profilePic = 'http://www.lovemarks.com/wp-content/uploads/profile-avatars/default-avatar-tech-guy.png';
+  if (!this.profilePic) {
+    this.profilePic = 'http://www.lovemarks.com/wp-content/uploads/profile-avatars/default-avatar-tech-guy.png';
+  }
+
   return cipher(this.password, null, null).bind(this)
     .then(function (hash) {
       this.password = hash;
