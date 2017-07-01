@@ -21,7 +21,7 @@ body {
 }
 
 .carousel{
-    background: #2f4357;
+    background: #5486a5;
     margin-top: 20px;
     width: auto;
     height: 500px;
@@ -84,4 +84,16 @@ body {
 
 }
 
+.img-responsive {
+    height: 250px;
+}
+
+.album-title {
+    color: #29a7b4;
+}
+.album-row {
+    background: #5486a5;
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
 
