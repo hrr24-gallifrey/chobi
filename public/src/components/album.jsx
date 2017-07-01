@@ -7,7 +7,7 @@ const Album = ({album, selectAlbum}) => { // edited this (wip)
   }*/
   const photos = album.photos.map((photo, i) => {
     if(i < 4) {
-      return (<div className="col-md-3" onClick={() => { selectAlbum(album); }}><Photo photo={photo}/></div>);
+      return (<div className="col-md-3" onClick={() => { selectAlbum(album, i); }}><Photo photo={photo}/></div>);
     }
   });
 
