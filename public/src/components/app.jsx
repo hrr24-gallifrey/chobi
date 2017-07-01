@@ -14,8 +14,8 @@ export default class App extends React.Component {
       currentAlbum: null,
       currentPhoto: 0,
       currentAlbumIndex: 5,
-      currentUser: {}, // change
-      displayUser: {} // change
+      currentUser: {},
+      displayUser: {}
     };
   }
 
@@ -54,6 +54,21 @@ export default class App extends React.Component {
     });
   }
 
+  addFriend(friendName) {
+    let data = {friendName: friendName}
+    $.ajax({
+      type: 'POST',
+      url: '',
+      data: data,
+      success: function(response) {
+        this.setState({albums: data.albums, currentUser: data, displayUser: data.username});
+      }.bind(this),
+      error: function(err) {
+        console.error('error', err);
+      }.bind(this)
+    });
+  }
+
   selectAlbum(album, photo) {
     let photoNum = photo || 0;
     console.log(album);
@@ -67,7 +82,7 @@ export default class App extends React.Component {
       url: '/user/' + this.state.currentUser,
       success: function(data) {
         console.log(data);
-        this.setState({albums: data.albums, currentUser: data, displayUser: data});
+        this.setState({albums: data.albums, currentUser: data, displayUser: data.username});
         console.log(this.state.albums);
       }.bind(this),
       error: function(err) {
@@ -105,7 +120,7 @@ export default class App extends React.Component {
   render() {
     return (
       <div>
-        <Navbar addPhoto={this.addPhoto.bind(this)}/>
+        <Navbar addPhoto={this.addPhoto.bind(this)} currentUser={this.state.currentUser} addFriend={this.addFriend.bind(this)}/>
         <div className="container-fluid">
           <this.renderPage
             currentAlbum={this.state.currentAlbum}
