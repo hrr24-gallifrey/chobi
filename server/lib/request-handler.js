@@ -7,61 +7,58 @@ const path = require('path');
 const upload = multer().single('photo');
 const requestHandler = {};
 
-const showAccessibleAlbums = function(current_username, albums) {
-  return _.filter(albums, function(album) {
-    return album.access.includes(current_username);
+const showAccessibleAlbums = function (currentUsername, albums) {
+  return _.filter(albums, album => {
+    return album.access.includes(currentUsername);
   });
 };
 
 requestHandler.getUser = function (req, res) {
-  const current_username = req.session.username; // ken01
-  const query_username = req.body.username; // john_doe
-  if (current_username === query_username) {
+  const currentUsername = req.session.username; // ken01
+  const queryUsername = req.body.username; // john_doe
+  if (currentUsername === queryUsername) {
     User.findOne({ username: req.session.username }, { password: 0 }, (error, user) => {
       if (error) {
         // console.error(error)
         res.status(500).send(error);
       } else {
-
         res.json(user);
       }
     });
   } else {
-    User.findOne({ username: query_username }, { password: 0, friends:0, email:0 }, (error, user) => {
-      //user john doe
+    User.findOne({ username: queryUsername }, { password: 0, friends: 0, email: 0 }, (error, user) => { // eslint-disable-line
+      // user john doe
       if (error) {
         // console.error(error)
         res.status(500).send(error);
       } else {
-        //john does albums
+        // john does albums
         // show keno1 only the albums he has acces
         // john doe albums[0].access = [john_dow, ken01]
-        user.albums = showAccessibleAlbums(current_username, user.albums);
+        user.albums = showAccessibleAlbums(currentUsername, user.albums);
         res.json(user);
       }
     });
   }
-
 };
 
 
-
 requestHandler.getUserAlbums = function (req, res) {
-  const current_username = req.session.username;
-  const query_username = req.body.username;
+  const currentUsername = req.session.username;
+  const queryUsername = req.body.username;
   let albums;
-  User.findOne({ username: query_username }, { password: 0 }, (error, user) => {
+  User.findOne({ username: queryUsername }, { password: 0 }, (error, user) => {
     if (error) {
       // console.error(error)
       res.status(500).send(error);
     } else {
-      if (current_username !== query_username ){
-        albums = showAccessibleAlbums(user.albums, query_username);
+      if (currentUsername !== queryUsername) {
+        albums = showAccessibleAlbums(user.albums, queryUsername);
         res.json(albums);
       } else {
         res.json(user.albums);
       }
-      //res.json(user.albums);
+      // res.json(user.albums);
       //
     }
   });
@@ -138,7 +135,6 @@ requestHandler.handleUploadPhoto = (req, res) => {
               res.status(200).json(savedUser);
             });
           } else {
-
             res.status(500).json(err);
           }
         } // eslint-disable-line
@@ -168,8 +164,6 @@ requestHandler.handleUploadPhoto = (req, res) => {
 // };
 
 
-
-
 // AUTH stuff
 
 requestHandler.sendSignup = function (req, res) {
@@ -177,21 +171,18 @@ requestHandler.sendSignup = function (req, res) {
 };
 
 requestHandler.sendLogin = function (req, res) {
-
   res.sendFile(path.join(__dirname, '../../public/login.html'));
 };
 
 
-function createUser(user, req, res){
+function createUser(user, req, res) {
   User.create(
     user,
     (error, user) => {// eslint-disable-line
       if (error) {
-
         res.status(500).redirect('/signup');
       } else {
-        req.session.regenerate(function() {
-
+        req.session.regenerate(() => {
           req.session.username = req.body.username;
           res.redirect('/');
         });
@@ -201,8 +192,6 @@ function createUser(user, req, res){
 }
 
 requestHandler.handleSignup = function (req, res) {
-
-
   upload(req, res, () => {
     const user = {
       firstName: req.body.firstName,
@@ -214,7 +203,6 @@ requestHandler.handleSignup = function (req, res) {
       albums: [],
     };
 
-
     if (req.file && req.file.buffer) {
       cloudinaryApi.uploadPhotoBuffer(req.file.buffer, result => {
         user.profilePic = result.url;
@@ -223,17 +211,15 @@ requestHandler.handleSignup = function (req, res) {
     } else {
       createUser(user, req, res);
     }
-
   });
 };
 
 requestHandler.handleLogin = function (req, res) {
-  User.findOne({username: req.body.username}, function(err, user){
+  User.findOne({ username: req.body.username }, (err, user) => {
     if (user) {
-      User.comparePassword(req.body.password, user.password, function(isAuthenticated){
+      User.comparePassword(req.body.password, user.password, isAuthenticated => {
         if (isAuthenticated) {
-          req.session.regenerate(function() {
-
+          req.session.regenerate(() => {
             req.session.username = req.body.username;
             res.redirect('/');
           });
@@ -245,11 +231,10 @@ requestHandler.handleLogin = function (req, res) {
       res.redirect('/auth/signup');
     }
   });
-
 };
 
-requestHandler.handleLogout = function(req, res) {
-  req.session.destroy(function(err) {
+requestHandler.handleLogout = function (req, res) {
+  req.session.destroy(err => {
     if (err) {
       res.status(500);
     } else {

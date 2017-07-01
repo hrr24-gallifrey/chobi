@@ -6,7 +6,6 @@ router.user = Router();
 router.auth = Router();
 
 
-
 // auth routes
 router.auth.get('/signup', requestHandler.sendSignup);
 
