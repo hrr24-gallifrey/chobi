@@ -21,7 +21,7 @@ body {
 }
 
 .carousel{
-    background: #5486a5;
+    background-color: #5486a5;
     margin-top: 20px;
     width: auto;
     height: 500px;
@@ -33,7 +33,7 @@ body {
 .carousel .item img{
     margin: 0 auto; /* Align slide image horizontally center */
     width: auto;
-    height: 500px;
+    height: 500px !important;
     max-height: 500px;
 }
 

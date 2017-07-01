@@ -3,16 +3,30 @@ import React from 'react';
 const AlbumPhotoDisplay = ({photos, albums, selectAlbum, currentPhoto}) => {
   const slides = photos.map((photo, i) => {
     if (i === currentPhoto) {
-      return (<div className="item active" data-slide-number={i} onClick={()=>{console.log(i)}}><img src={photo.url} alt="Second Slide" /><div className="carousel-caption"><h3 >{photo.description}</h3></div></div>)
+      return (
+        <div className="item active" data-slide-number={i}>
+          <a href={photo.url} data-toggle="lightbox">
+            <img src={photo.url} alt="" />
+          </a>
+          <div className="carousel-caption"><h3 >{photo.description}</h3></div>
+        </div>
+      )
     }
     if (i !== currentPhoto) {
-      return (<div className="item" data-slide-number={i} onClick={()=>{console.log(i)}}><img src={photo.url} alt="Second Slide" /><div className="carousel-caption"><h3 >{photo.description}</h3></div></div>)
+      return (
+        <div className="item" data-slide-number={i}>
+          <a href={photo.url} data-toggle="lightbox">
+            <img src={photo.url} alt="" />
+          </a>
+          <div className="carousel-caption"><h3 >{photo.description}</h3></div>
+        </div>
+      )
     }
   })
   const indicators = photos.map((photo, i) => {
-    if (i !== 0) {
+    // if (i !== 0) {
       return (<li className="" data-slide-to={i} data-target="#myCarousel"><img alt="" src={photo.url}/></li>)
-    }
+    // }
   })
   return (
     <div>
@@ -33,9 +47,6 @@ const AlbumPhotoDisplay = ({photos, albums, selectAlbum, currentPhoto}) => {
 
       {/*Carousel indicators*/}
       <ol className="carousel-indicators">
-        <li className="" data-slide-to="0" data-target="#myCarousel">
-          <img alt="" src={photos[0].url}/>
-        </li>
         {indicators}
       </ol>
     </div>
@@ -59,4 +70,10 @@ export default AlbumPhotoDisplay;
 <div className="item active" data-slide-number="0" onClick={()=>{console.log(0)}}>
             <img src={photos[0].url} alt="First Slide" /><div className="carousel-caption"><h3 >{photos[0].description}</h3></div>
         </div>
+
+        onClick={()=>{console.log(i)}}
+
+        <li className="" data-slide-to="0" data-target="#myCarousel">
+          <img alt="" src={photos[0].url} />
+        </li>
             */
