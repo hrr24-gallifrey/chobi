@@ -39,6 +39,8 @@ const userSchema = new Schema({
   profilePic: String,
   albums: [albumSchema],
   friends: [],
+  pendingSent: [],
+  pendingReceived: [],
 });
 
 
