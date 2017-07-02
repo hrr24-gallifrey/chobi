@@ -217,7 +217,7 @@ requestHandler.handleSignup = function (req, res) {
 requestHandler.handleLogin = function (req, res) {
   User.findOne({ username: req.body.username }, (err, user) => {
     if (user) {
-      User.comparePassword(req.body.password, user.password, isAuthenticated => {
+      User.comparePassword(req.body.password, user.password, (err, isAuthenticated) => {
         if (isAuthenticated) {
           req.session.regenerate(() => {
             req.session.username = req.body.username;
