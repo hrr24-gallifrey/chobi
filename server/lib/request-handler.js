@@ -243,8 +243,107 @@ requestHandler.handleLogout = function (req, res) {
   });
 };
 
-requestHandler.addFriend = function (req, res) {
+// requestHandler.getFriends = function (req, res) {
 
+// };
+
+requestHandler.addFriend = function (req, res) {
+  const currUsername = req.session.username;
+  const friendUsername = req.params.username;
+
+  // Kenneth (friendUser): add currUsername (Scott) to pendingReceived array
+  User.findOneAndUpdate({ username: friendUsername },
+    { $push: { pendingReceived: currUsername } }
+  );
+  // Scott (currUser): add friendsUsername (Kenneth) to pendingSent array
+  User.findOneAndUpdate({ username: currUsername },
+    { $push: { pendingSent: friendUsername } },
+    {new: true},
+    (err, currUser) => {
+      res.json(currUser);
+    }
+  );
+};
+
+requestHandler.rejectFriend = function (req, res) {
+  const currUsername = req.session.username;
+  const friendUsername = req.params.username;
+  // Scott (friendUser): remove currUsername (Kenneth) from pendingSent array
+  User.findOneAndUpdate({ username: friendUsername },
+    { $pull: { pendingSent: currUsername } }
+  );
+  // Kenneth (currUser): remove friendsUsername (Scott) from pendingReceived array
+  User.findOneAndUpdate({ username: currUsername },
+    { $pull: { pendingReceived: friendUsername } },
+    {new: true},
+    (err, currUser) => {
+      res.json(currUser);
+    }
+  );
+};
+
+requestHandler.acceptFriend = function (req, res) {
+  const currUsername = req.session.username;
+  const friendUsername = req.params.username;
+  // Scott: add currUser (Kenneth) to friendUser (Scott) friends array
+  User.findOneAndUpdate({ username: friendUsername },
+    { $push: { friends: currUsername } },
+  // Scott remove currUsername (Kenneth) from friendUser (Scott) pendingSent array
+    { $pull: { pendingSent: currUsername } }
+  );
+  // Kenneth: add friendUsername (Scott) to currUser (Kenneth) friends array
+  User.findOneAndUpdate({ username: currUsername },
+    { $push: { friends: friendUsername } },
+    // Kenneth: remove friendUsername (Scott) from currUser (Kenneth) pendingReceived array
+    { $pull: { pendingReceived: friendUsername } },
+    {new: true},
+    (err, currUser) => {
+      res.json(currUser);
+    });
+};
+
+requestHandler.getUsers = function (req, res) {
+  User.find({}, 'firstName lastName username profilePic', (err, users) => {
+    if (err) {
+      res.status(500);
+    } else {
+    res.json(users);
+    }
+  });
+};
+
+requestHandler.getPendingSent = function (req, res) {
+  User.findOne({ username: req.session.username }, 'pendingSent', (err, user) => {
+    if (err) {
+      res.status(500);
+    } else {
+      User.find({ username: { $in: user.pendingSent } }, 'firstName lastName username profilePic',
+        (err, users) => {
+          if (err) {
+            res.status(500);
+          } else {
+            res.json(users);
+          }
+        });
+    }
+  });
+};
+
+requestHandler.getPendingRec = function (req, res) {
+  User.findOne({ username: req.session.username }, 'pendingReceived', (err, user) => {
+    if (err) {
+      res.status(500);
+    } else {
+      User.find({ username: {$in: user.pendingReceived } }, 'firstName lastName username profilePic',
+        (err, users) => {
+          if (err) {
+            res.status(500);
+          } else {
+            res.json(users);
+          }
+        });
+    }
+  });
 };
 
 module.exports = requestHandler;
