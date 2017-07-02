@@ -243,4 +243,8 @@ requestHandler.handleLogout = function (req, res) {
   });
 };
 
+requestHandler.addFriend = function (req, res) {
+
+};
+
 module.exports = requestHandler;

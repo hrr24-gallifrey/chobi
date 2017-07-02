@@ -58,7 +58,7 @@ export default class App extends React.Component {
     let data = {friendName: friendName}
     $.ajax({
       type: 'POST',
-      url: '',
+      url: '/user/addfriend',
       data: data,
       success: function(response) {
         this.setState({albums: data.albums, currentUser: data, displayUser: data.username});

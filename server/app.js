@@ -37,6 +37,8 @@ app.get('/user/:username', requestHandler.getUser);
 // app.get('/user/albums/:username', requestHandler.getUser);
 app.post('/user/upload', requestHandler.handleUploadPhoto);
 
+app.post('/user/addfriend', requestHandler.addFriend);
+
 
 app.get('/auth/signup', requestHandler.sendSignup);
 
