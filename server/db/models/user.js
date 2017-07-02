@@ -44,7 +44,6 @@ const userSchema = new Schema({
 });
 
 
-
 userSchema.pre('save', function (next) {
   const cipher = Promise.promisify(bcrypt.hash);
   if (!this.profilePic) {
@@ -59,7 +58,6 @@ userSchema.pre('save', function (next) {
 });
 
 
-
 const User = mongoose.model('User', userSchema);
 
 User.comparePassword = function (candidatePassword, savedPassword, cb) {
@@ -68,7 +66,6 @@ User.comparePassword = function (candidatePassword, savedPassword, cb) {
     cb(null, isMatch);
   });
 };
-
 
 
 // if (process.env.NODE_ENV !== 'production') {
