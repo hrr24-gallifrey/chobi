@@ -37,6 +37,22 @@ app.get('/user/:username', requestHandler.getUser);
 // app.get('/user/albums/:username', requestHandler.getUser);
 app.post('/user/upload', requestHandler.handleUploadPhoto);
 
+// endpoint for user list (pick friend to add from list)
+app.get('/users', authenticate, requestHandler.getUsers);
+
+app.get('/user/pending-sent', requestHandler.getPendingSent);
+
+app.get('/user/pending-received', requestHandler.getPendingRec);
+
+// app.get('/friends', requestHandler.getFriends);
+
+
+app.post('/friends/add/:username', requestHandler.addFriend);
+
+app.post('/friends/reject/:username', requestHandler.rejectFriend);
+
+app.post('/friends/accept/:username', requestHandler.acceptFriend);
+
 
 app.get('/auth/signup', requestHandler.sendSignup);
 

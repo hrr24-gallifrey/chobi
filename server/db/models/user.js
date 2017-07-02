@@ -39,16 +39,10 @@ const userSchema = new Schema({
   profilePic: String,
   albums: [albumSchema],
   friends: [],
+  pendingSent: [],
+  pendingReceived: [],
 });
 
-const User = mongoose.model('User', userSchema);
-
-User.comparePassword = function (candidatePassword, savedPassword, cb) {
-  bcrypt.compare(candidatePassword, savedPassword, (err, isMatch) => { // eslint-disable-line
-    if (err) { return cb(err); }
-    cb(null, isMatch);
-  });
-};
 
 userSchema.pre('save', function (next) {
   const cipher = Promise.promisify(bcrypt.hash);
@@ -62,6 +56,17 @@ userSchema.pre('save', function (next) {
       next();
     });
 });
+
+
+const User = mongoose.model('User', userSchema);
+
+User.comparePassword = function (candidatePassword, savedPassword, cb) {
+  bcrypt.compare(candidatePassword, savedPassword, (err, isMatch) => { // eslint-disable-line
+    if (err) { return cb(err); }
+    cb(null, isMatch);
+  });
+};
+
 
 // if (process.env.NODE_ENV !== 'production') {
 //   const testUser = {

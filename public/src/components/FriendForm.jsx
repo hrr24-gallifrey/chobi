@@ -23,11 +23,14 @@ const FriendForm = ({addFriend, currentUser}) => {
       addFriend(friend);
       friend.value = '';
     }}>
-      <div className="form-group">
+      {/*<div className="form-group">
         <input id="addfriend" className="form-control" name="addFriend" placeholder="Add a Friend" ref={node => {
           friend = node
         }}/>
-      </div>
+      </div>*/}
+      <button type="button" className="btn btn-primary btn-lg" data-toggle="modal" data-target="#userListModal">
+      Add Friend
+      </button>
     </form>
     </div>
   )

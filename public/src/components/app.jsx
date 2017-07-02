@@ -3,6 +3,7 @@ import Navbar from './navbar.jsx';
 import AlbumDisplay from './albumdisplay.jsx';
 import AlbumList from './albumlist.jsx';
 import Album from './album.jsx';
+import UserList from './userList.jsx';
 
 export default class App extends React.Component {
   constructor(props) {
@@ -10,12 +11,14 @@ export default class App extends React.Component {
 
     this.state = {
       albums: [],
-      photos: [],
       currentAlbum: null,
-      currentPhoto: 0,
-      currentAlbumIndex: 5,
       currentUser: {},
-      displayUser: {}
+      displayUser: {},
+      users: [],
+      friendRequests: {
+        pendingSentUsers: [],
+        pendingRecUsers: []
+      }
     };
   }
 
@@ -54,11 +57,62 @@ export default class App extends React.Component {
     });
   }
 
+  getUsers() {
+    $.ajax({
+      type: 'GET',
+      url: '/users',
+      success: function(data) {
+        console.log(data);
+        this.setState({users: data});
+        console.log(this.state.users);
+      }.bind(this),
+      error: function(err) {
+        console.error('error', err);
+      }.bind(this)
+    });
+  }
+
+  getFriendRequests() {
+    $.ajax({
+      type: 'GET',
+      url: '/user/pending-sent',
+      success: function(data) {
+        console.log(data);
+        this.setState({
+          friendRequests: {
+            pendingSentUsers: data
+          }
+        });
+        console.log('pendingSentUsers', this.state.pendingSentUsers);
+      }.bind(this),
+      error: function(err) {
+        console.error('error', err);
+      }.bind(this)
+    });
+
+    $.ajax({
+      type: 'GET',
+      url: '/user/pending-received',
+      success: function(data) {
+        console.log(data);
+        this.setState({
+          friendRequests: {
+            pendingRecUsers: data
+          }
+        });
+        console.log('pendingRecUsers', this.state.pendingRecUsers);
+      }.bind(this),
+      error: function(err) {
+        console.error('error', err);
+      }.bind(this)
+    });
+  }
+
   addFriend(friendName) {
     let data = {friendName: friendName}
     $.ajax({
       type: 'POST',
-      url: '',
+      url: `/friends/add/${friendName}`,
       data: data,
       success: function(response) {
         this.setState({albums: data.albums, currentUser: data, displayUser: data.username});
@@ -89,6 +143,9 @@ export default class App extends React.Component {
         console.error('error', err);
       }.bind(this)
     });
+
+    this.getUsers();
+    this.getFriendRequests();
   }
 
   changeAlbum(dir) {
@@ -120,7 +177,12 @@ export default class App extends React.Component {
   render() {
     return (
       <div>
-        <Navbar addPhoto={this.addPhoto.bind(this)} currentUser={this.state.currentUser} addFriend={this.addFriend.bind(this)}/>
+        <Navbar
+          addPhoto={this.addPhoto.bind(this)}
+          currentUser={this.state.currentUser}
+          addFriend={this.addFriend.bind(this)}
+          friendRequests={this.state.friendRequests}
+        />
         <div className="container-fluid">
           <this.renderPage
             currentAlbum={this.state.currentAlbum}
@@ -129,6 +191,7 @@ export default class App extends React.Component {
             currentPhoto={this.state.currentPhoto}
           />
         </div>
+        <UserList users={this.state.users} addFriend={this.addFriend.bind(this)} />
       </div>
     );
   }

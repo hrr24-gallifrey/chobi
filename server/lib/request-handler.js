@@ -35,7 +35,7 @@ requestHandler.getUser = function (req, res) {
         // john does albums
         // show keno1 only the albums he has acces
         // john doe albums[0].access = [john_dow, ken01]
-        user.albums = showAccessibleAlbums(currentUsername, user.albums);
+        user.albums = showAccessibleAlbums(currentUsername, user.albums); // eslint-disable-line
         res.json(user);
       }
     });
@@ -52,7 +52,7 @@ requestHandler.getUserAlbums = function (req, res) {
       // console.error(error)
       res.status(500).send(error);
     } else {
-      if (currentUsername !== queryUsername) {
+      if (currentUsername !== queryUsername) { // eslint-disable-line no-lonely-if
         albums = showAccessibleAlbums(user.albums, queryUsername);
         res.json(albums);
       } else {
@@ -217,7 +217,7 @@ requestHandler.handleSignup = function (req, res) {
 requestHandler.handleLogin = function (req, res) {
   User.findOne({ username: req.body.username }, (err, user) => {
     if (user) {
-      User.comparePassword(req.body.password, user.password, isAuthenticated => {
+      User.comparePassword(req.body.password, user.password, (err, isAuthenticated) => { // eslint-disable-line
         if (isAuthenticated) {
           req.session.regenerate(() => {
             req.session.username = req.body.username;
@@ -239,6 +239,109 @@ requestHandler.handleLogout = function (req, res) {
       res.status(500);
     } else {
       res.redirect('/auth/login');
+    }
+  });
+};
+
+// requestHandler.getFriends = function (req, res) {
+
+// };
+
+requestHandler.addFriend = function (req, res) {
+  const currUsername = req.session.username;
+  const friendUsername = req.params.username;
+
+  // Kenneth (friendUser): add currUsername (Scott) to pendingReceived array
+  User.findOneAndUpdate({ username: friendUsername },
+    { $push: { pendingReceived: currUsername } } // eslint-disable-line comma-dangle
+  );
+  // Scott (currUser): add friendsUsername (Kenneth) to pendingSent array
+  User.findOneAndUpdate({ username: currUsername },
+    { $push: { pendingSent: friendUsername } },
+    { new: true },
+    (err, currUser) => {
+      res.json(currUser);
+    } // eslint-disable-line comma-dangle
+  );
+};
+
+requestHandler.rejectFriend = function (req, res) {
+  const currUsername = req.session.username;
+  const friendUsername = req.params.username;
+  // Scott (friendUser): remove currUsername (Kenneth) from pendingSent array
+  User.findOneAndUpdate({ username: friendUsername },
+    { $pull: { pendingSent: currUsername } } // eslint-disable-line comma-dangle
+  );
+  // Kenneth (currUser): remove friendsUsername (Scott) from pendingReceived array
+  User.findOneAndUpdate({ username: currUsername },
+    { $pull: { pendingReceived: friendUsername } },
+    { new: true },
+    (err, currUser) => {
+      res.json(currUser);
+    } // eslint-disable-line comma-dangle
+  );
+};
+
+requestHandler.acceptFriend = function (req, res) {
+  const currUsername = req.session.username;
+  const friendUsername = req.params.username;
+  // Scott: add currUser (Kenneth) to friendUser (Scott) friends array
+  User.findOneAndUpdate({ username: friendUsername },
+    { $push: { friends: currUsername } },
+  // Scott remove currUsername (Kenneth) from friendUser (Scott) pendingSent array
+    { $pull: { pendingSent: currUsername } } // eslint-disable-line comma-dangle
+  );
+  // Kenneth: add friendUsername (Scott) to currUser (Kenneth) friends array
+  User.findOneAndUpdate({ username: currUsername },
+    { $push: { friends: friendUsername } },
+    // Kenneth: remove friendUsername (Scott) from currUser (Kenneth) pendingReceived array
+    { $pull: { pendingReceived: friendUsername } },
+    { new: true },
+    (err, currUser) => {
+      res.json(currUser);
+    });
+};
+
+requestHandler.getUsers = function (req, res) {
+  User.find({}, 'firstName lastName username profilePic', (err, users) => {
+    if (err) {
+      res.status(500);
+    } else {
+      res.json(users);
+    }
+  });
+};
+
+requestHandler.getPendingSent = function (req, res) {
+  User.findOne({ username: req.session.username }, 'pendingSent', (err, user) => {
+    if (err) {
+      res.status(500);
+    } else {
+      User.find({ username: { $in: user.pendingSent } }, 'firstName lastName username profilePic',
+        (err, users) => { // eslint-disable-line
+          if (err) {
+            res.status(500);
+          } else {
+            res.json(users);
+          }
+        });
+    }
+  });
+};
+
+requestHandler.getPendingRec = function (req, res) {
+  User.findOne({ username: req.session.username }, 'pendingReceived', (err, user) => {
+    if (err) {
+      res.status(500);
+    } else {
+      User.find({ username: { $in: user.pendingReceived } }, 'firstName lastName username profilePic',
+        (err, users) => { // eslint-disable-line
+          if (err) {
+            res.status(500);
+          } else {
+            res.json(users);
+          }
+        });
     }
   });
 };
