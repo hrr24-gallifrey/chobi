@@ -2,8 +2,9 @@ import React from 'react';
 // import Bootstrap from 'bootstrap';
 import PhotoForm from './photoform.jsx';
 import FriendForm from './FriendForm.jsx';
+import FriendRequestList from './friendRequestList.jsx';
 
-const Navbar = ({addPhoto, currentUser, addFriend}) => {
+const Navbar = ({addPhoto, currentUser, addFriend, friendRequests}) => {
   return (
 
 <nav className="navbar navbar-default navbar-fixed-top">
@@ -27,7 +28,18 @@ const Navbar = ({addPhoto, currentUser, addFriend}) => {
             <FriendForm addFriend={addFriend} currentUser={currentUser}/>
           </div>
         </li>
+        {/* Friend Requests dropdown: */}
+        <li className="dropdown">
+          <a className="dropdown-toggle" href="#" data-toggle="dropdown">Friend Requests <span className="caret"></span></a>
+          <div className="dropdown-menu">
+            <FriendRequestList
+              user={currentUser}
+              friendRequests={friendRequests}
+            />
+          </div>
+        </li>
       </ul>
+
       <ul className="nav navbar-nav navbar-right">
 
         <li className="dropdown">
