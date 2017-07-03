@@ -1,9 +1,9 @@
 import React from 'react';
 
 const UserList = ({users, addFriend}) => {
-  let userListItem = users.map(user => {
+  let userListItem = users.map( (user, idx) => {
     return (
-      <div className="row">
+      <div key={idx} className="row">
         <div className="col-xs-4"><img className="userlist-pic" src={user.profilePic} /></div>
         <div className="userlist-name col-xs-4">{user.firstName} {user.lastName}</div>
         <button className="btn btn-sm col-xs-4"

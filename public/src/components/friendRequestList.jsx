@@ -2,9 +2,9 @@ import React from 'react';
 
 const FriendRequestList = ({user, friendRequests}) => {
   console.log('===friendRequests===', friendRequests);
-  let friendReqsSent = friendRequests.pendingSentUsers.map(user => {
+  let friendReqsSent = friendRequests.pendingSentUsers.map( (user, idx) => {
     return (
-      <div className="row">
+      <div key={idx} className="row">
         <div className="col-xs-4"><img className="userlist-pic" src={user.profilePic} /></div>
         <div className="userlist-name col-xs-4">{user.firstName} {user.lastName}</div>
         <div className="friend-req-pending col-xs-4">pending</div>
@@ -12,9 +12,9 @@ const FriendRequestList = ({user, friendRequests}) => {
     );
   });
 
-  let friendReqsRec = friendRequests.pendingRecUsers.map(user => {
+  let friendReqsRec = friendRequests.pendingRecUsers.map((user, idx) => {
     return (
-      <div className="row">
+      <div key={idx} className="row">
         <div className="col-xs-4"><img className="userlist-pic" src={user.profilePic} /></div>
         <div className="userlist-name col-xs-4">{user.firstName} {user.lastName}</div>
         <button className="btn btn-sm friend-req-accept col-xs-2">Accept</button>

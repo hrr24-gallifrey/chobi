@@ -343,22 +343,37 @@ requestHandler.getFriendRequests = function(req, res){
   console.log("getFriendRequests");
   var currentUsername = req.session.username;
   var friendRequests = {
-    pendingSent: [],
-    pendingReceived: []
+    pendingSentUsers: [],
+    pendingRecUsers: []
   };
 
   getPendingSent(currentUsername, function(err, users){
     if (users) {
-      friendRequests.pendingSent = users;
+      friendRequests.pendingSentUsers = users;
     }
 
     getPendingReceived(currentUsername, function(err, users){
       if (users){
-        friendRequests.pendingReceived = users;
+        friendRequests.pendingRecUsers = users;
       }
       console.log(friendRequests);
       res.status(200).json(friendRequests);
     });
+  });
+};
+
+requestHandler.getFriends = function(req, res){
+  const currentUsername = req.session.username;
+  User.findOne({ username: currentUsername }, 'pendingSent', (err, user) => {
+    if (err) {
+      res.status(500).send(err);
+    } else {
+      User.find({ username: { $in: user.friends } }, 'firstName lastName username profilePic',
+        (err, users) => { // eslint-disable-line
+          res.json(users);
+        }
+      );
+    }
   });
 };
 
