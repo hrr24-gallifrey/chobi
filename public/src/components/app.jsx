@@ -12,14 +12,21 @@ export default class App extends React.Component {
     this.state = {
       albums: [],
       currentAlbum: null,
-      currentUser: {},
-      displayUser: {},
+      currentUser: {
+        albums: []
+      },
+      displayUser: {
+        albums:[]
+      },
       users: [],
+      friends: [],
       friendRequests: {
         pendingSentUsers: [],
         pendingRecUsers: []
       }
     };
+
+    this.request = this.addFriend.bind(this);
   }
 
   addPhoto(photo, albumName, description, newAlbumName) { // pass in album name/id pulled from drop-down selector?
@@ -57,14 +64,51 @@ export default class App extends React.Component {
     });
   }
 
+  getUser(username) {
+    username = username || '';
+    var currentUser = this.state.currentUser;
+
+    $.ajax({
+      type: 'GET',
+      url: '/user/' + username,
+      success: function(data) {
+        console.log(data);
+        if (!currentUser) {
+          currentUser = data;
+        }
+        this.setState({ currentUser: currentUser, displayUser: data});
+        console.log(this.state.albums);
+      }.bind(this),
+      error: function(err) {
+        console.error('error', err);
+      }.bind(this)
+    });
+
+  }
+
   getUsers() {
     $.ajax({
       type: 'GET',
       url: '/users',
       success: function(data) {
-        console.log(data);
+        console.log("==== get users ===", data);
         this.setState({users: data});
         console.log(this.state.users);
+      }.bind(this),
+      error: function(err) {
+        console.error('error', err);
+      }.bind(this)
+    });
+  }
+
+  getFriends() {
+    $.ajax({
+      type: 'GET',
+      url: '/friends',
+      success: function(data) {
+        console.log("==== get friends ===", data);
+        this.setState({friends: data});
+
       }.bind(this),
       error: function(err) {
         console.error('error', err);
@@ -75,32 +119,12 @@ export default class App extends React.Component {
   getFriendRequests() {
     $.ajax({
       type: 'GET',
-      url: '/user/pending-sent',
+      url: '/user/friend-requests',
       success: function(data) {
-        console.log(data);
+        console.log("===get friend-requests===", data);
         this.setState({
-          friendRequests: {
-            pendingSentUsers: data
-          }
+          friendRequests: data
         });
-        console.log('pendingSentUsers', this.state.pendingSentUsers);
-      }.bind(this),
-      error: function(err) {
-        console.error('error', err);
-      }.bind(this)
-    });
-
-    $.ajax({
-      type: 'GET',
-      url: '/user/pending-received',
-      success: function(data) {
-        console.log(data);
-        this.setState({
-          friendRequests: {
-            pendingRecUsers: data
-          }
-        });
-        console.log('pendingRecUsers', this.state.pendingRecUsers);
       }.bind(this),
       error: function(err) {
         console.error('error', err);
@@ -116,11 +140,17 @@ export default class App extends React.Component {
       data: data,
       success: function(response) {
         this.setState({albums: data.albums, currentUser: data, displayUser: data.username});
+        //this.getFriendRequests();
       }.bind(this),
       error: function(err) {
         console.error('error', err);
       }.bind(this)
     });
+
+  }
+
+  selectUser(username){
+
   }
 
   selectAlbum(album, photo) {
@@ -131,21 +161,10 @@ export default class App extends React.Component {
   }
 
   componentDidMount() {
-    $.ajax({
-      type: 'GET',
-      url: '/user/' + this.state.currentUser,
-      success: function(data) {
-        console.log(data);
-        this.setState({albums: data.albums, currentUser: data, displayUser: data.username});
-        console.log(this.state.albums);
-      }.bind(this),
-      error: function(err) {
-        console.error('error', err);
-      }.bind(this)
-    });
-
+    this.getUser();
     this.getUsers();
     this.getFriendRequests();
+    this.getFriends();
   }
 
   changeAlbum(dir) {
@@ -180,7 +199,7 @@ export default class App extends React.Component {
         <Navbar
           addPhoto={this.addPhoto.bind(this)}
           currentUser={this.state.currentUser}
-          addFriend={this.addFriend.bind(this)}
+          friends={this.state.friends}
           friendRequests={this.state.friendRequests}
         />
         <div className="container-fluid">

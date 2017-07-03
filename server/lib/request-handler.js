@@ -312,38 +312,71 @@ requestHandler.getUsers = function (req, res) {
   });
 };
 
-requestHandler.getPendingSent = function (req, res) {
-  User.findOne({ username: req.session.username }, 'pendingSent', (err, user) => {
+const getPendingSent = function (currentUsername, cb) {
+  User.findOne({ username: currentUsername }, 'pendingSent', (err, user) => {
     if (err) {
-      res.status(500);
+      cb(err, null);
     } else {
       User.find({ username: { $in: user.pendingSent } }, 'firstName lastName username profilePic',
         (err, users) => { // eslint-disable-line
-          if (err) {
-            res.status(500);
-          } else {
-            res.json(users);
-          }
+          cb(err, users);
+        }
+      );
+    }
+  });
+};
+
+const getPendingReceived = function (currentUsername, cb) {
+  User.findOne({ username: currentUsername }, 'pendingReceived', (err, user) => {
+    if (err) {
+      cb(err, null);
+    } else {
+      User.find({ username: { $in: user.pendingReceived } }, 'firstName lastName username profilePic',
+        (err, users) => { // eslint-disable-line
+          cb(err, users);
         });
     }
   });
 };
 
-requestHandler.getPendingRec = function (req, res) {
-  User.findOne({ username: req.session.username }, 'pendingReceived', (err, user) => {
+requestHandler.getFriendRequests = function(req, res){
+  console.log("getFriendRequests");
+  var currentUsername = req.session.username;
+  var friendRequests = {
+    pendingSentUsers: [],
+    pendingRecUsers: []
+  };
+
+  getPendingSent(currentUsername, function(err, users){
+    if (users) {
+      friendRequests.pendingSentUsers = users;
+    }
+
+    getPendingReceived(currentUsername, function(err, users){
+      if (users){
+        friendRequests.pendingRecUsers = users;
+      }
+      console.log(friendRequests);
+      res.status(200).json(friendRequests);
+    });
+  });
+};
+
+requestHandler.getFriends = function(req, res){
+  const currentUsername = req.session.username;
+  User.findOne({ username: currentUsername }, 'pendingSent', (err, user) => {
     if (err) {
-      res.status(500);
+      res.status(500).send(err);
     } else {
-      User.find({ username: { $in: user.pendingReceived } }, 'firstName lastName username profilePic',
+      User.find({ username: { $in: user.friends } }, 'firstName lastName username profilePic',
         (err, users) => { // eslint-disable-line
-          if (err) {
-            res.status(500);
-          } else {
-            res.json(users);
-          }
-        });
+          res.json(users);
+        }
+      );
     }
   });
 };
+
+
 
 module.exports = requestHandler;
