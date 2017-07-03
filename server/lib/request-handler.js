@@ -312,38 +312,56 @@ requestHandler.getUsers = function (req, res) {
   });
 };
 
-requestHandler.getPendingSent = function (req, res) {
-  User.findOne({ username: req.session.username }, 'pendingSent', (err, user) => {
+const getPendingSent = function (currentUsername, cb) {
+  User.findOne({ username: currentUsername }, 'pendingSent', (err, user) => {
     if (err) {
-      res.status(500);
+      cb(err, null);
     } else {
       User.find({ username: { $in: user.pendingSent } }, 'firstName lastName username profilePic',
         (err, users) => { // eslint-disable-line
-          if (err) {
-            res.status(500);
-          } else {
-            res.json(users);
-          }
+          cb(err, users);
+        }
+      );
+    }
+  });
+};
+
+const getPendingReceived = function (currentUsername, cb) {
+  User.findOne({ username: currentUsername }, 'pendingReceived', (err, user) => {
+    if (err) {
+      cb(err, null);
+    } else {
+      User.find({ username: { $in: user.pendingReceived } }, 'firstName lastName username profilePic',
+        (err, users) => { // eslint-disable-line
+          cb(err, users);
         });
     }
   });
 };
 
-requestHandler.getPendingRec = function (req, res) {
-  User.findOne({ username: req.session.username }, 'pendingReceived', (err, user) => {
-    if (err) {
-      res.status(500);
-    } else {
-      User.find({ username: { $in: user.pendingReceived } }, 'firstName lastName username profilePic',
-        (err, users) => { // eslint-disable-line
-          if (err) {
-            res.status(500);
-          } else {
-            res.json(users);
-          }
-        });
+requestHandler.getFriendRequests = function(req, res){
+  console.log("getFriendRequests");
+  var currentUsername = req.session.username;
+  var friendRequests = {
+    pendingSent: [],
+    pendingReceived: []
+  };
+
+  getPendingSent(currentUsername, function(err, users){
+    if (users) {
+      friendRequests.pendingSent = users;
     }
+
+    getPendingReceived(currentUsername, function(err, users){
+      if (users){
+        friendRequests.pendingReceived = users;
+      }
+      console.log(friendRequests);
+      res.status(200).json(friendRequests);
+    });
   });
 };
+
+
 
 module.exports = requestHandler;
