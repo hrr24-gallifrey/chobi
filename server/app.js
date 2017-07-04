@@ -29,13 +29,15 @@ app.use(session({
   saveUninitialized: true,
 }));
 
+// only render index.html if logged in
 app.get('/', authenticate);
 
+// Sends User object to frontend - contains all info (albums, etc.)
 app.get('/user/:username', requestHandler.getUser);
 
 app.post('/user/upload', requestHandler.handleUploadPhoto);
 
-
+// Authentation endpoints:
 app.get('/auth/signup', requestHandler.sendSignup);
 
 app.post('/auth/signup', requestHandler.handleSignup);
@@ -48,12 +50,6 @@ app.get('/auth/logout', requestHandler.handleLogout);
 
 
 app.use(express.static(path.join(__dirname, '/../public')));
-
-// app.get('/', authenticate, function());
-
-
-// app.use('/auth', router.auth);
-// app.use('/user', router.user);
 
 
 module.exports = app;

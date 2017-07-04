@@ -4,6 +4,8 @@ const Promise = require('bluebird');
 
 const Schema = mongoose.Schema;
 
+
+// photoSchema and albumSchema added to make querying nested arrays easier
 const photoSchema = new Schema({
   description: String,
   url: String,
@@ -43,6 +45,7 @@ const userSchema = new Schema({
 
 const User = mongoose.model('User', userSchema);
 
+// helper function for authentication
 User.comparePassword = function (candidatePassword, savedPassword, cb) {
   bcrypt.compare(candidatePassword, savedPassword, (err, isMatch) => { // eslint-disable-line
     if (err) { return cb(err); }
@@ -51,6 +54,7 @@ User.comparePassword = function (candidatePassword, savedPassword, cb) {
 };
 
 
+// WARNING: Below code drops the database; only uncomment and run if you absolutely need to
 
 // if (process.env.NODE_ENV !== 'production') {
 //   const testUser = {
