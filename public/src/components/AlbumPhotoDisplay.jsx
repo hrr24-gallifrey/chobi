@@ -1,5 +1,12 @@
 import React from 'react';
 
+/* ------------------------------
+Render a slideshow carousel to the page for a single album:
+ -carousel shows single photo with controls for previous and next
+ -carousel indicators renders thumbnails of the entire album of photos and can control the main carousel
+ -triggers a lightbox on click of the photo in the main carousel
+-------------------------------*/
+
 const AlbumPhotoDisplay = ({photos, albums, selectAlbum, currentPhoto}) => {
   const slides = photos.map((photo, i) => {
     if (i === currentPhoto) {
@@ -24,9 +31,7 @@ const AlbumPhotoDisplay = ({photos, albums, selectAlbum, currentPhoto}) => {
     }
   })
   const indicators = photos.map((photo, i) => {
-    // if (i !== 0) {
       return (<li className="" data-slide-to={i} data-target="#myCarousel"><img alt="" src={photo.url}/></li>)
-    // }
   })
   return (
     <div>
@@ -54,26 +59,3 @@ const AlbumPhotoDisplay = ({photos, albums, selectAlbum, currentPhoto}) => {
 }
 
 export default AlbumPhotoDisplay;
-
-/*<div class="row hidden-phone" id="slider-thumbs">
-              <div class="span12">
-                <ol className="carousel-indicators">
-                    <li data-target="#myCarousel" data-slide-to="0" className="active"><a className="thumbnail" id="carousel-selector-0"><img alt="" src={photos[0].url}/></a></li>
-                    {indicators}
-                </ol>
-              </div>
-            </div>
-
-<div className="carousel-caption"><h3 >{photos[4].description}</h3></div>
-
-
-<div className="item active" data-slide-number="0" onClick={()=>{console.log(0)}}>
-            <img src={photos[0].url} alt="First Slide" /><div className="carousel-caption"><h3 >{photos[0].description}</h3></div>
-        </div>
-
-        onClick={()=>{console.log(i)}}
-
-        <li className="" data-slide-to="0" data-target="#myCarousel">
-          <img alt="" src={photos[0].url} />
-        </li>
-            */

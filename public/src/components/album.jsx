@@ -1,10 +1,12 @@
 import React from 'react';
 import Photo from './photo.jsx';
 
-const Album = ({album, selectAlbum}) => { // edited this (wip)
-  /*const photos = album.photos.map(photo, i) => {
-    return (<div className="col-md-3"><Photo photo={photo} key={album.name + i}/></div>)
-  }*/
+/* ------------------------------
+Render an individual album row with the first 4 photos to the App for each album:
+ -uses selectAlbum method from app.jsx
+-------------------------------*/
+
+const Album = ({album, selectAlbum}) => {
   const photos = album.photos.map((photo, i) => {
     if(i < 4) {
       return (<div className="col-md-3" onClick={() => { selectAlbum(album, i); }}><Photo photo={photo}/></div>);
@@ -15,7 +17,7 @@ const Album = ({album, selectAlbum}) => { // edited this (wip)
     <div>
       <div className="row">
         <div className="col-md-12">
-          <h3 className="album-title" onClick={() => { selectAlbum(album); }}>{album.name}</h3> {/* << make dynamic*/}
+          <h3 className="album-title" onClick={() => { selectAlbum(album); }}>{album.name}</h3>
         </div>
       </div>
 

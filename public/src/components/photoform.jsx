@@ -1,5 +1,10 @@
 import React from 'react';
 
+/* ------------------------------
+Render Photo upload form to dropdown in navbar:
+  -call upon addPhoto method from App.jsx
+-------------------------------*/
+
 const PhotoForm = ({addPhoto, currentUser}) => {
   let photo;
   let name;
@@ -27,11 +32,10 @@ const PhotoForm = ({addPhoto, currentUser}) => {
   });
 
   return (
-    <form method="post" encType="multpart/form-data" onSubmit={(e) => { // add a drop-down selector for album?
+    <form method="post" encType="multpart/form-data" onSubmit={(e) => {
       e.preventDefault();
       addPhoto(photo.files[0], name, desc.value, newName.value);
       photo.value = '';
-      // name.value = '';
       desc.value = '';
       newName.value = '';
     }}>
@@ -67,10 +71,3 @@ const PhotoForm = ({addPhoto, currentUser}) => {
 
 export default PhotoForm;
 
-/*
-<div className="form-group">
-        <input id="name" className="form-control" type="text" name="name" placeholder="Album name" autoComplete="off" ref={node2 => {
-          name = node2;
-        }}/>
-      </div>
-      */

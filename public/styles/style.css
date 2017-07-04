@@ -3,19 +3,20 @@
   padding-bottom: 10px;
   width: 300px;
 }
-/*.dropdown-menu .form-group {
-  margin-bottom: 7px;
-}*/
+
 .navbar-brand {
   padding: 1px 6px;
 }
+
 .navbar-brand>img {
   max-width: 150px;
 }
+
 body {
   padding-top: 50px;
   padding-bottom: 50px;
 }
+
 .new-name-hidden {
   display: none;
 }
@@ -27,9 +28,11 @@ body {
     height: 500px;
     max-height: 500px;
 }
+
 .carousel .item{
     min-height: 280px; /* Prevent carousel from being distorted if for some reason image doesn't load */
 }
+
 .carousel .item img{
     margin: 0 auto; /* Align slide image horizontally center */
     width: auto;
@@ -84,11 +87,6 @@ body {
     color: #93c7ff;
 }
 
-.carousel-caption h3 {
-  /* color: black !important; */
-
-}
-
 .img-responsive {
     height: 250px;
 }
@@ -96,6 +94,7 @@ body {
 .album-title {
     color: #29a7b4;
 }
+
 .album-row {
     background: #5486a5;
     padding-top: 10px;
