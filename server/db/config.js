@@ -1,6 +1,7 @@
 const mongoose = require('mongoose');
-var config = require('../lib/config-env.js');
+var config = require('../lib/config-env.js'); // Create this file
 
+// Set up your config-env.js file based on README instructions to make functional
 const mongooseUri = config.mongooseUri;
 
 mongoose.connect(mongooseUri);

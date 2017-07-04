@@ -6,22 +6,28 @@ const path = require('path');
 const bcrypt = require('bcrypt-nodejs');
 const Promise = require('bluebird');
 
-const upload = multer().single('photo');
+// Parses multi-part data from form - used to extract image data
+const upload = multer().single('photo'); // 'photo' indicates the name attribute on the multpart/form element (they must be the same)
 const requestHandler = {};
 
+// Unused - For private multi-user sharing (not yet implemented)
 const showAccessibleAlbums = function (currentUsername, albums) {
+  // filters by albums the currentUsername has access to (access property in Schema)
   return _.filter(albums, album => {
     return album.access.includes(currentUsername);
   });
 };
 
+// Sends User object to frontend - contains all info (albums, etc.)
 requestHandler.getUser = function (req, res) {
-  const currentUsername = req.session.username; // ken01
-  const queryUsername = req.body.username || currentUsername; // john_doe
+  // Logged in user:
+  const currentUsername = req.session.username;
+  // if the user is trying to view a different user's albums, pull from req.body; else pull from session
+  const queryUsername = req.body.username || currentUsername;
+
   if (currentUsername === queryUsername) {
     User.findOne({ username: req.session.username }, { password: 0 }, (error, user) => {
       if (error) {
-        // console.error(error)
         res.status(500).send(error);
       } else {
         res.json(user);
@@ -29,14 +35,9 @@ requestHandler.getUser = function (req, res) {
     });
   } else {
     User.findOne({ username: queryUsername }, { password: 0, friends: 0, email: 0 }, (error, user) => { // eslint-disable-line
-      // user john doe
       if (error) {
-        // console.error(error)
         res.status(500).send(error);
       } else {
-        // john does albums
-        // show keno1 only the albums he has acces
-        // john doe albums[0].access = [john_dow, ken01]
         user.albums = showAccessibleAlbums(currentUsername, user.albums);
         res.json(user);
       }
@@ -45,33 +46,8 @@ requestHandler.getUser = function (req, res) {
 };
 
 
-requestHandler.getUserAlbums = function (req, res) {
-  const currentUsername = req.session.username;
-  const queryUsername = req.body.username;
-  let albums;
-  User.findOne({ username: queryUsername }, { password: 0 }, (error, user) => {
-    if (error) {
-      // console.error(error)
-      res.status(500).send(error);
-    } else {
-      if (currentUsername !== queryUsername) {
-        albums = showAccessibleAlbums(user.albums, queryUsername);
-        res.json(albums);
-      } else {
-        res.json(user.albums);
-      }
-      // res.json(user.albums);
-      //
-    }
-  });
-};
-
-// requestHandler.sendSignup = function (req, res) {
-//   res.sendFile()
-// };
-
-
 requestHandler.handleUploadPhoto = (req, res) => {
+  // function from multer - used to parse multi-part form data
   upload(req, res, err => {
     if (err) {
       // An error occurred when uploading
@@ -79,10 +55,11 @@ requestHandler.handleUploadPhoto = (req, res) => {
       return;
     }
 
+    // .uploadPhotoBuffer from Cloudinary - req.file.buffer from multer
     cloudinaryApi.uploadPhotoBuffer(req.file.buffer, result => {
       const photo = {
         description: req.body.description,
-        url: result.url,
+        url: result.url, // result returned from Cloudinary API (url of photo)
       };
 
       const album = {
@@ -92,6 +69,7 @@ requestHandler.handleUploadPhoto = (req, res) => {
         ],
       };
 
+      // Find the user and add the uploaded photo
       User.findOne(
         { username: req.session.username },
         (error, user) => {
@@ -145,28 +123,8 @@ requestHandler.handleUploadPhoto = (req, res) => {
   });
 };
 
-// requestHandler.createNewAlbum = function (req, res) {
-//   const album = {
-//     name: req.body.albumName,
-//     photos: [],
-//   };
 
-//   User.findOneAndUpdate(
-//     { username: req.params.username },
-//     { $push: { albums: album } },
-//     { new: true },
-//     (error, user) => {
-//       if (error) {
-//         res.status(500).send(error);
-//       } else {
-//         res.json(user);
-//       }
-//     } // eslint-disable-line
-//   );
-// };
-
-
-// AUTH stuff
+// Authentication methods
 
 requestHandler.sendSignup = function (req, res) {
   res.sendFile(path.join(__dirname, '../../public/signup.html'));
@@ -180,12 +138,13 @@ requestHandler.sendLogin = function (req, res) {
 function createUser(user, req, res) {
   const cipher = Promise.promisify(bcrypt.hash);
   if (!user.profilePic) {
+    // default avatar if one wasn't provided
     user.profilePic = 'http://www.lovemarks.com/wp-content/uploads/profile-avatars/default-avatar-tech-guy.png';
   }
+  // hash newly created user's password
   cipher(user.password, null, null)
     .then(function (hash) {
       user.password = hash;
-      // console.log(hash);
       User.create(
         user,
         (error, user) => {// eslint-disable-line
@@ -193,6 +152,7 @@ function createUser(user, req, res) {
             res.status(500).redirect('/signup');
           } else {
             req.session.regenerate(() => {
+              // pull username from request to identify the current user
               req.session.username = req.body.username;
               res.redirect('/');
             });
@@ -213,8 +173,9 @@ requestHandler.handleSignup = function (req, res) {
       profilePic: '',
       albums: [],
     };
-
+    // checks if a profilePic was uploaded
     if (req.file && req.file.buffer) {
+      // if so, upload it
       cloudinaryApi.uploadPhotoBuffer(req.file.buffer, result => {
         user.profilePic = result.url;
         createUser(user, req, res);

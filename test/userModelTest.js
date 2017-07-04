@@ -13,5 +13,3 @@ describe('User Model', () => {
   });
 
 });
-
-// was looking at https://www.terlici.com/2014/09/15/node-testing.html for ideas on further db tests, but it's getting late
