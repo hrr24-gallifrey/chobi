@@ -3,6 +3,8 @@ const multer = require('multer');
 const cloudinaryApi = require('./cloudinaryApi.js');
 const _ = require('underscore');
 const path = require('path');
+const bcrypt = require('bcrypt-nodejs');
+const Promise = require('bluebird');
 
 const upload = multer().single('photo');
 const requestHandler = {};
@@ -176,19 +178,28 @@ requestHandler.sendLogin = function (req, res) {
 
 
 function createUser(user, req, res) {
-  User.create(
-    user,
-    (error, user) => {// eslint-disable-line
-      if (error) {
-        res.status(500).redirect('/signup');
-      } else {
-        req.session.regenerate(() => {
-          req.session.username = req.body.username;
-          res.redirect('/');
-        });
-      }
-    } // eslint-disable-line
-  );
+  const cipher = Promise.promisify(bcrypt.hash);
+  if (!user.profilePic) {
+    user.profilePic = 'http://www.lovemarks.com/wp-content/uploads/profile-avatars/default-avatar-tech-guy.png';
+  }
+  cipher(user.password, null, null)
+    .then(function (hash) {
+      user.password = hash;
+      // console.log(hash);
+      User.create(
+        user,
+        (error, user) => {// eslint-disable-line
+          if (error) {
+            res.status(500).redirect('/signup');
+          } else {
+            req.session.regenerate(() => {
+              req.session.username = req.body.username;
+              res.redirect('/');
+            });
+          }
+        } // eslint-disable-line
+      );
+    });
 }
 
 requestHandler.handleSignup = function (req, res) {

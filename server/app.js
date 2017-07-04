@@ -1,11 +1,9 @@
 const express = require('express');
-// const router = require('./routes.js');
 const cors = require('cors');
 const path = require('path');
 const session = require('express-session');
 const requestHandler = require('./lib/request-handler.js');
 const bodyParser = require('body-parser');
-
 
 const app = express();
 
@@ -34,7 +32,7 @@ app.use(session({
 app.get('/', authenticate);
 
 app.get('/user/:username', requestHandler.getUser);
-// app.get('/user/albums/:username', requestHandler.getUser);
+
 app.post('/user/upload', requestHandler.handleUploadPhoto);
 
 
