@@ -26,6 +26,8 @@
 
 - Node 3.x
 - Mongod 3.2.13
+- Webpack
+- Bower
 
 
 ## Development
@@ -36,13 +38,34 @@ From within the root directory:
 
 ```sh
 sudo npm install -g bower
-npm install
-bower install
+npm run bundle
+```
+
+### Start nodemon
+
+```sh
+npm run start-dev
+```
+
+## Legacy Group Instructions
+
+> - Sign up for a Cloudinary API key
+> - Create a mongoose URI
+> - Create a config-env.js file in server/lib/ and enter credentials, e.g.:
+
+```sh
+exports.cloudinary = {
+  NAME: '',
+  API_KEY: '',
+  API_SECRET: '',
+};
+
+exports.mongooseUri = 'mongodb://localhost/example';
 ```
 
 ### Roadmap
 
-View the project roadmap [here](LINK_TO_PROJECT_ISSUES)
+View the project roadmap [here](https://github.com/hrr24-gallifrey/chobi/issues)
 
 
 ## Contributing
