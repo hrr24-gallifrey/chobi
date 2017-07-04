@@ -1,6 +1,7 @@
 const mongoose = require('mongoose');
+var config = require('../lib/config-env.js');
 
-const mongooseUri = 'mongodb://chobi_user:chobi123@ds139262.mlab.com:39262/heroku_rwrj9msr';
+const mongooseUri = config.mongooseUri;
 
 mongoose.connect(mongooseUri);
 
