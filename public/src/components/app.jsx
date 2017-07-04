@@ -14,7 +14,9 @@ export default class App extends React.Component {
       currentAlbum: null,
       currentPhoto: 0,
       currentAlbumIndex: 5,
-      currentUser: {}, // change
+      currentUser: {
+        albums: []
+      }, // change
       displayUser: {} // change
     };
   }
@@ -105,7 +107,7 @@ export default class App extends React.Component {
   render() {
     return (
       <div>
-        <Navbar addPhoto={this.addPhoto.bind(this)}/>
+        <Navbar addPhoto={this.addPhoto.bind(this)} currentUser={this.state.currentUser}/>
         <div className="container-fluid">
           <this.renderPage
             currentAlbum={this.state.currentAlbum}

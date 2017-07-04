@@ -41,23 +41,6 @@ const userSchema = new Schema({
   friends: [],
 });
 
-
-
-userSchema.pre('save', function (next) {
-  const cipher = Promise.promisify(bcrypt.hash);
-  if (!this.profilePic) {
-    this.profilePic = 'http://www.lovemarks.com/wp-content/uploads/profile-avatars/default-avatar-tech-guy.png';
-  }
-
-  return cipher(this.password, null, null).bind(this)
-    .then(function (hash) {
-      this.password = hash;
-      next();
-    });
-});
-
-
-
 const User = mongoose.model('User', userSchema);
 
 User.comparePassword = function (candidatePassword, savedPassword, cb) {

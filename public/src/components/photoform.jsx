@@ -1,10 +1,19 @@
 import React from 'react';
 
-const PhotoForm = ({addPhoto}) => {
+const PhotoForm = ({addPhoto, currentUser}) => {
   let photo;
   let name;
   let desc;
   let newName;
+  let albums;
+
+  if(currentUser.albums.length) {
+    albums = currentUser.albums.map((album) => {
+      return <option value={album.name}>{album.name}</option>
+    });
+  } else {
+    albums = <option value="All Photos">All Photos</option>;
+  }
 
   $('select#name').on('change', function(e) {
     e.preventDefault();
@@ -40,8 +49,7 @@ const PhotoForm = ({addPhoto}) => {
       <div className="form-group">
         <select id="name" className="form-control" name="name">
           <option value="">Select Album</option>
-          <option value="personal">Personal</option>
-          <option value="office">Office</option>
+          {albums}
           <option value="__newalbum">Create New Album</option>
         </select>
       </div>

@@ -2,7 +2,7 @@ import React from 'react';
 // import Bootstrap from 'bootstrap';
 import PhotoForm from './photoform.jsx';
 
-const Navbar = ({addPhoto}) => {
+const Navbar = ({addPhoto, currentUser}) => {
   return (
 
 <nav className="navbar navbar-default navbar-fixed-top">
@@ -24,7 +24,7 @@ const Navbar = ({addPhoto}) => {
         <li className="dropdown">
           <a className="dropdown-toggle" href="#" data-toggle="dropdown">Upload <span className="caret"></span></a>
           <div className="dropdown-menu">
-            <PhotoForm addPhoto={addPhoto}/>
+            <PhotoForm addPhoto={addPhoto} currentUser={currentUser}/>
           </div>
         </li>
 
