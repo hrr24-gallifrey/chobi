@@ -1,6 +1,11 @@
 import React from 'react';
-// import Bootstrap from 'bootstrap';
 import PhotoForm from './photoform.jsx';
+
+/* ------------------------------
+Render Navbar to top of page:
+  -uses bootstrap navbar
+  -calls on PhotoForm
+-------------------------------*/
 
 const Navbar = ({addPhoto, currentUser}) => {
   return (

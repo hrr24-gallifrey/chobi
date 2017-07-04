@@ -1,6 +1,10 @@
 import React from 'react';
 import Photo from './photo.jsx';
 
+/* ------------------------------
+defunct not currently in use
+-------------------------------*/
+
 const AlbumPhotos = ({}) => {
   return (
     <div>

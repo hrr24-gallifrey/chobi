@@ -4,6 +4,12 @@ import AlbumDisplay from './albumdisplay.jsx';
 import AlbumList from './albumlist.jsx';
 import Album from './album.jsx';
 
+/* ------------------------------
+Main react App:
+  -holds the states
+  -holds the methods
+-------------------------------*/
+
 export default class App extends React.Component {
   constructor(props) {
     super(props);
@@ -16,12 +22,12 @@ export default class App extends React.Component {
       currentAlbumIndex: 5,
       currentUser: {
         albums: []
-      }, // change
-      displayUser: {} // change
+      },
+      displayUser: {}
     };
   }
 
-  addPhoto(photo, albumName, description, newAlbumName) { // pass in album name/id pulled from drop-down selector?
+  addPhoto(photo, albumName, description, newAlbumName) {
 
     var data = new FormData();
     data.append('photo', photo, photo.name);
@@ -47,7 +53,6 @@ export default class App extends React.Component {
       processData: false,
       contentType: false,
       success: function(response) {
-        console.log('success', response);
         this.setState({albums: response.albums, photos: response.photos});
       }.bind(this),
       error: function(error) {
@@ -58,8 +63,6 @@ export default class App extends React.Component {
 
   selectAlbum(album, photo) {
     let photoNum = photo || 0;
-    console.log(album);
-    console.log(photoNum)
     this.setState({currentAlbum: album, currentPhoto: photoNum});
   }
 
@@ -68,9 +71,7 @@ export default class App extends React.Component {
       type: 'GET',
       url: '/user/' + this.state.currentUser,
       success: function(data) {
-        console.log(data);
         this.setState({albums: data.albums, currentUser: data, displayUser: data});
-        console.log(this.state.albums);
       }.bind(this),
       error: function(err) {
         console.error('error', err);
@@ -78,12 +79,7 @@ export default class App extends React.Component {
     });
   }
 
-  changeAlbum(dir) {
-    //dir -1 or 1
-    // set.state of current album to next or previous album
-  }
-
-  renderPage({currentAlbum, albums, selectAlbum, currentPhoto}) {
+  renderPage({currentAlbum, albums, selectAlbum, currentPhoto}) { //logic for whether a single album should display or album list
     if (currentAlbum === null) {
       return (
         <AlbumList
@@ -91,7 +87,6 @@ export default class App extends React.Component {
           selectAlbum={selectAlbum}
         />
       );
-      //return (<Album />);
     } else {
       return (
         <AlbumDisplay
@@ -121,9 +116,3 @@ export default class App extends React.Component {
   }
 }
 
-
-/*
-<AlbumDisplay currentAlbum={this.state.currentAlbum}/>
-<AlbumList albums={this.state.albums} selectAlbum={this.selectAlbum.bind(this)}/>
-<Album />
-*/
